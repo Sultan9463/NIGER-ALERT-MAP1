@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Administration | Niger Alert</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/admin_login.css') }}">
+
+</head>
+
+<body>
+
+<main class="login-page">
+
+    <!-- ========================= -->
+    <!-- PARTIE GAUCHE -->
+    <!-- ========================= -->
+
+    <section class="login-brand">
+
+        <div class="brand-content">
+
+            <div class="brand-logo">
+                <i class="bi bi-shield-check"></i>
+            </div>
+
+            <span class="brand-label">
+                NIGER ALERT
+            </span>
+
+            <h1>
+                Espace<br>
+                Administrateur
+            </h1>
+
+            <p>
+                Gérez les signalements et contribuez
+                à améliorer la sécurité des citoyens.
+            </p>
+
+            <div class="security-info">
+
+                <i class="bi bi-shield-lock"></i>
+
+                Accès sécurisé réservé aux administrateurs.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- PARTIE DROITE -->
+    <!-- ========================= -->
+
+    <section class="login-form-section">
+
+        <div class="login-container">
+
+
+            <!-- RETOUR -->
+
+            <a href="{{ url_for('index') }}"
+               class="back-link">
+
+                <i class="bi bi-arrow-left"></i>
+
+                Retour au site
+
+            </a>
+
+
+            <!-- ========================= -->
+            <!-- EN-TÊTE -->
+            <!-- ========================= -->
+
+            <div class="login-heading">
+
+                <span id="formLabel">
+                    CONNEXION
+                </span>
+
+                <h2 id="formTitle">
+                    Bon retour 👋
+                </h2>
+
+                <p id="formDescription">
+                    Connectez-vous à votre espace administrateur.
+                </p>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- MESSAGES -->
+            <!-- ========================= -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="alert alert-{{ category }}">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- ========================= -->
+            <!-- CONNEXION -->
+            <!-- ========================= -->
+
+            <form method="POST"
+                  action="{{ url_for('admin_login') }}"
+                  class="login-form"
+                  id="loginForm">
+
+
+                <!-- USERNAME -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Nom d'utilisateur
+                    </label>
+
+                    <div class="input-group-custom">
+
+                        <i class="bi bi-person"></i>
+
+                        <input type="text"
+                               name="username"
+                               placeholder="Votre nom d'utilisateur"
+                               autocomplete="username"
+                               required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Mot de passe
+                    </label>
+
+                    <div class="input-group-custom">
+
+                        <i class="bi bi-lock"></i>
+
+                        <input type="password"
+                               name="password"
+                               id="loginPassword"
+                               placeholder="Votre mot de passe"
+                               autocomplete="current-password"
+                               required>
+
+                        <button type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('loginPassword', this)">
+
+                            <i class="bi bi-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOUTON -->
+
+                <button type="submit"
+                        class="login-button">
+
+                    <i class="bi bi-box-arrow-in-right"></i>
+
+                    Se connecter
+
+                </button>
+
+
+            </form>
+
+
+            <!-- ========================= -->
+            <!-- INSCRIPTION -->
+            <!-- ========================= -->
+
+            
+
+
+            <!-- ========================= -->
+            <!-- CHANGEMENT DE FORMULAIRE -->
+            <!-- ========================= -->
+
+           
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    /* ========================= */
+    /* AFFICHER / MASQUER PASSWORD */
+    /* ========================= */
+
+    function togglePassword(inputId, button) {
+
+        const input =
+            document.getElementById(inputId);
+
+        const icon =
+            button.querySelector("i");
+
+        if (input.type === "password") {
+
+            input.type = "text";
+
+            icon.classList.remove("bi-eye");
+
+            icon.classList.add("bi-eye-slash");
+
+        } else {
+
+            input.type = "password";
+
+            icon.classList.remove("bi-eye-slash");
+
+            icon.classList.add("bi-eye");
+
+        }
+
+    }
+
+
+    /* ========================= */
+    /* AFFICHER INSCRIPTION */
+    /* ========================= */
+
+    function showRegister() {
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const registerForm =
+            document.getElementById("registerForm");
+
+        const formLabel =
+            document.getElementById("formLabel");
+
+        const formTitle =
+            document.getElementById("formTitle");
+
+        const formDescription =
+            document.getElementById("formDescription");
+
+        const switchText =
+            document.getElementById("switchText");
+
+        const switchButton =
+            document.getElementById("switchButton");
+
+
+        loginForm.style.display = "none";
+
+        registerForm.style.display = "block";
+
+
+        formLabel.textContent =
+            "CRÉATION DE COMPTE";
+
+        formTitle.textContent =
+            "Créer un compte 🔐";
+
+        formDescription.textContent =
+            "Créez votre compte administrateur.";
+
+        switchText.textContent =
+            "Vous avez déjà un compte ?";
+
+        switchButton.textContent =
+            "Se connecter";
+
+        switchButton.onclick =
+            showLogin;
+
+    }
+
+
+    /* ========================= */
+    /* AFFICHER CONNEXION */
+    /* ========================= */
+
+    function showLogin() {
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const registerForm =
+            document.getElementById("registerForm");
+
+        const formLabel =
+            document.getElementById("formLabel");
+
+        const formTitle =
+            document.getElementById("formTitle");
+
+        const formDescription =
+            document.getElementById("formDescription");
+
+        const switchText =
+            document.getElementById("switchText");
+
+        const switchButton =
+            document.getElementById("switchButton");
+
+
+        registerForm.style.display = "none";
+
+        loginForm.style.display = "block";
+
+
+        formLabel.textContent =
+            "CONNEXION";
+
+        formTitle.textContent =
+            "Bon retour 👋";
+
+        formDescription.textContent =
+            "Connectez-vous à votre espace administrateur.";
+
+        switchText.textContent =
+            "Vous n'avez pas encore de compte ?";
+
+        switchButton.textContent =
+            "Créer un compte";
+
+        switchButton.onclick =
+            showRegister;
+
+    }
+
+
+    /* ========================= */
+    /* VALIDATION MOT DE PASSE */
+    /* ========================= */
+
+    document
+        .getElementById("registerForm")
+        .addEventListener("submit", function(event) {
+
+            const password =
+                document.getElementById("registerPassword").value;
+
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+
+
+            if (password !== confirmPassword) {
+
+                event.preventDefault();
+
+                alert(
+                    "Les deux mots de passe ne correspondent pas."
+                );
+
+            }
+
+        });
+
+</script>
+
+</body>
+
+</html>

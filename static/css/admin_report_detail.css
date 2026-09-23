@@ -1,0 +1,801 @@
+/* =====================================================
+   NIGER ALERT - ADMIN REPORT DETAIL
+===================================================== */
+
+:root {
+    --primary: #0b5ed7;
+    --primary-dark: #084298;
+    --primary-light: #eaf2ff;
+
+    --dark: #0f172a;
+    --text: #64748b;
+    --border: #e2e8f0;
+    --white: #ffffff;
+    --background: #f8fafc;
+
+    --success: #16a34a;
+    --warning: #d97706;
+    --danger: #dc2626;
+}
+
+
+/* RESET */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    background: var(--background);
+    color: var(--dark);
+    font-family: "Segoe UI", sans-serif;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.admin-navbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+}
+
+
+.navbar-container {
+    max-width: 1280px;
+
+    margin: 0 auto;
+
+    padding: 16px 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    color: inherit;
+    text-decoration: none;
+}
+
+
+.brand-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    color: white;
+
+    font-size: 21px;
+}
+
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1;
+}
+
+
+.brand-text span {
+    color: var(--primary);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 3px;
+}
+
+
+.brand-text strong {
+    margin-top: 3px;
+
+    font-size: 18px;
+}
+
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 25px;
+}
+
+
+.admin-name {
+    color: var(--text);
+
+    font-size: 14px;
+}
+
+
+.admin-name i {
+    color: var(--primary);
+}
+
+
+.logout-link {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--danger);
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.detail-main {
+    padding: 45px 25px 80px;
+}
+
+
+.detail-container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 30px;
+
+    color: var(--text);
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.back-button:hover {
+    color: var(--primary);
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 30px;
+
+    margin-bottom: 30px;
+}
+
+
+.report-number {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+.detail-title h1 {
+    margin-bottom: 12px;
+
+    font-size: 34px;
+    font-weight: 800;
+}
+
+
+.detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+
+.detail-meta i {
+    color: var(--primary);
+}
+
+
+.current-status {
+    min-width: 150px;
+
+    padding: 16px 20px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+}
+
+
+.current-status span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--text);
+
+    font-size: 11px;
+}
+
+
+.current-status strong {
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.detail-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        320px;
+
+    gap: 25px;
+}
+
+
+.detail-content {
+    display: flex;
+    flex-direction: column;
+
+    gap: 25px;
+}
+
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.detail-card,
+.management-card {
+    padding: 28px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+}
+
+
+.card-title,
+.management-title {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 22px;
+}
+
+
+.card-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 18px;
+}
+
+
+.location-card-icon {
+    background: #ecfdf3;
+    color: var(--success);
+}
+
+
+.image-card-icon {
+    background: #f3e8ff;
+    color: #9333ea;
+}
+
+
+.card-title h2 {
+    font-size: 19px;
+    font-weight: 800;
+}
+
+
+.report-description {
+    color: var(--text);
+
+    line-height: 1.8;
+
+    white-space: pre-line;
+}
+
+
+/* =====================================================
+   LOCATION
+===================================================== */
+
+.location-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+
+.location-item {
+    padding: 15px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+}
+
+
+.location-item span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--text);
+
+    font-size: 11px;
+}
+
+
+.location-item strong {
+    font-size: 14px;
+}
+
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+
+.coordinates a {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 10px;
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   IMAGE
+===================================================== */
+
+.image-placeholder {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    border: 2px dashed var(--border);
+
+    border-radius: 12px;
+
+    color: var(--text);
+}
+
+
+.image-placeholder i {
+    font-size: 40px;
+    color: var(--primary);
+}
+
+
+/* =====================================================
+   MANAGEMENT
+===================================================== */
+
+.management-panel {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.management-title i {
+    color: var(--primary);
+    font-size: 20px;
+}
+
+
+.management-title h3 {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+
+.management-card label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--text);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.management-card select {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: white;
+}
+
+
+.management-card select:focus {
+    border-color: var(--primary);
+}
+
+
+/* BUTTONS */
+
+.update-button,
+.delete-button {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.update-button {
+    background: var(--primary);
+    color: white;
+}
+
+
+.update-button:hover {
+    background: var(--primary-dark);
+}
+
+
+.urgency-display {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 14px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.urgency-faible {
+    background: #ecfdf3;
+    color: var(--success);
+}
+
+
+.urgency-moyenne {
+    background: #fff7e6;
+    color: var(--warning);
+}
+
+
+.urgency-elevee {
+    background: #fef2f2;
+    color: var(--danger);
+}
+
+
+/* DANGER */
+
+.danger-card {
+    border-color: #fecaca;
+}
+
+
+.danger-title i,
+.danger-title h3 {
+    color: var(--danger);
+}
+
+
+.danger-card p {
+    margin-bottom: 18px;
+
+    color: var(--text);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+.delete-button {
+    background: var(--danger);
+    color: white;
+}
+
+
+.delete-button:hover {
+    background: #b91c1c;
+}
+
+
+/* STATUS */
+
+.status-en-attente {
+    color: var(--warning);
+}
+
+
+.status-en-cours {
+    color: var(--primary);
+}
+
+
+.status-traite {
+    color: var(--success);
+}
+
+.report-image-container {
+
+    overflow: hidden;
+
+    border-radius: 15px;
+}
+
+.report-image {
+
+    width: 100%;
+
+    max-height: 500px;
+
+    object-fit: cover;
+
+    border-radius: 15px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .management-panel {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .danger-card {
+        grid-column: 1 / -1;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .navbar-container {
+        padding: 14px 20px;
+    }
+
+
+    .admin-name {
+        display: none;
+    }
+
+
+    .detail-header {
+        flex-direction: column;
+    }
+
+
+    .detail-title h1 {
+        font-size: 27px;
+    }
+
+
+    .location-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .full-width {
+        grid-column: auto;
+    }
+
+
+    .management-panel {
+        display: flex;
+    }
+
+
+    .detail-main {
+        padding: 30px 15px 60px;
+    }
+
+
+    .detail-card,
+    .management-card {
+        padding: 20px;
+    }
+
+}
+
+
+/* =========================================================
+   INFORMATIONS DU SIGNALANT
+========================================================= */
+
+.user-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+
+.user-info-item {
+    padding: 16px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+}
+
+
+.user-info-item span {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 8px;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+.user-info-item span i {
+    color: #0b5ed7;
+
+    font-size: 16px;
+}
+
+
+.user-info-item strong {
+    display: block;
+
+    color: #14213d;
+
+    font-size: 15px;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .user-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

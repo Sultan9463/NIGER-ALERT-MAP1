@@ -1,0 +1,1309 @@
+/* =====================================================
+   NIGER ALERT - ADMIN DASHBOARD
+===================================================== */
+
+:root {
+    --primary: #0b5ed7;
+    --primary-dark: #084298;
+    --primary-light: #eaf2ff;
+
+    --dark: #0f172a;
+    --dark-light: #1e293b;
+
+    --text: #64748b;
+    --border: #e2e8f0;
+
+    --white: #ffffff;
+    --background: #f8fafc;
+
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    background: var(--background);
+    color: var(--dark);
+    font-family: "Segoe UI", sans-serif;
+}
+
+
+/* =====================================================
+   SIDEBAR
+   VERSION DESKTOP ET TABLETTE
+===================================================== */
+
+.sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 270px;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 25px 18px;
+
+    background: var(--dark);
+    color: white;
+
+    z-index: 1000;
+
+    overflow-y: auto;
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px 12px;
+
+    margin-bottom: 45px;
+}
+
+
+.sidebar-logo-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    font-size: 22px;
+}
+
+
+.sidebar-logo-text {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1;
+}
+
+
+.sidebar-logo-text span {
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    color: #93c5fd;
+
+    font-weight: 700;
+}
+
+
+.sidebar-logo-text strong {
+    font-size: 19px;
+
+    color: white;
+}
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 13px 15px;
+
+    border-radius: 10px;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.25s ease;
+}
+
+
+.sidebar-link i {
+    font-size: 18px;
+}
+
+
+.sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+
+    color: white;
+}
+
+
+.sidebar-link.active {
+    background: rgba(11, 94, 215, 0.2);
+
+    color: #93c5fd;
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.sidebar-bottom {
+    margin-top: auto;
+}
+
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 18px 10px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.admin-avatar {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #1e3a5f;
+
+    font-size: 20px;
+
+    flex-shrink: 0;
+}
+
+
+.admin-info {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+.admin-info strong {
+    font-size: 14px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.admin-info span {
+    margin-top: 3px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+.logout-button {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px 15px;
+
+    border-radius: 10px;
+
+    color: #fca5a5;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.25s ease;
+}
+
+
+.logout-button:hover {
+    background: rgba(220, 38, 38, 0.1);
+
+    color: #fecaca;
+}
+
+
+/* =====================================================
+   MAIN
+   DESKTOP + TABLETTE
+===================================================== */
+
+.dashboard-main {
+    min-height: 100vh;
+
+    margin-left: 270px;
+
+    padding: 45px;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 45px;
+}
+
+
+.dashboard-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--primary);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+.dashboard-header h1 {
+    margin-bottom: 8px;
+
+    font-size: 32px;
+
+    font-weight: 800;
+}
+
+
+.dashboard-header p {
+    color: var(--text);
+}
+
+
+.visit-site-button {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 12px 18px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: var(--dark);
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.25s ease;
+
+    flex-shrink: 0;
+}
+
+
+.visit-site-button:hover {
+    border-color: var(--primary);
+
+    color: var(--primary);
+}
+
+
+/* =====================================================
+   STATISTICS
+===================================================== */
+
+.statistics-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 45px;
+}
+
+
+.stat-card {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 22px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    background: white;
+
+    transition: 0.25s ease;
+}
+
+
+.stat-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 12px 25px
+        rgba(15, 23, 42, 0.06);
+}
+
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 23px;
+
+    flex-shrink: 0;
+}
+
+
+.stat-icon-blue {
+    background: #eaf2ff;
+
+    color: var(--primary);
+}
+
+
+.stat-icon-orange {
+    background: #fff7e6;
+
+    color: var(--warning);
+}
+
+
+.stat-icon-green {
+    background: #ecfdf3;
+
+    color: var(--success);
+}
+
+
+.stat-icon-red {
+    background: #fef2f2;
+
+    color: var(--danger);
+}
+
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+.stat-content span {
+    color: var(--text);
+
+    font-size: 12px;
+}
+
+
+.stat-content strong {
+    margin-top: 4px;
+
+    font-size: 26px;
+}
+
+
+/* =====================================================
+   REPORTS
+===================================================== */
+
+.reports-section {
+    margin-top: 20px;
+}
+
+
+.section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+
+.section-header span {
+    color: var(--primary);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+
+.section-header h2 {
+    margin-top: 8px;
+
+    font-size: 24px;
+
+    font-weight: 800;
+}
+
+
+.reports-number {
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    background: var(--primary-light);
+
+    color: var(--primary) !important;
+
+    font-size: 12px !important;
+
+    font-weight: 700 !important;
+
+    letter-spacing: 0 !important;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.reports-table-container {
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    background: white;
+}
+
+
+.reports-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+
+.reports-table th {
+    padding: 16px 20px;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    text-align: left;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.reports-table td {
+    padding: 18px 20px;
+
+    border-bottom: 1px solid var(--border);
+
+    vertical-align: middle;
+}
+
+
+.reports-table tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =====================================================
+   INCIDENT
+===================================================== */
+
+.incident-info {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.incident-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 19px;
+
+    flex-shrink: 0;
+}
+
+
+.incident-info div:last-child {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.incident-info strong {
+    font-size: 14px;
+}
+
+
+.incident-info span {
+    color: var(--text);
+
+    font-size: 11px;
+}
+
+
+/* =====================================================
+   LOCATION
+===================================================== */
+
+.location-info {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+
+.location-info i {
+    color: var(--primary);
+}
+
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.urgency-badge,
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 7px 10px;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+.urgency-faible {
+    background: #ecfdf3;
+
+    color: var(--success);
+}
+
+
+.urgency-moyenne {
+    background: #fff7e6;
+
+    color: #d97706;
+}
+
+
+.urgency-elevee {
+    background: #fef2f2;
+
+    color: var(--danger);
+}
+
+
+.status-en-attente {
+    background: #fff7e6;
+
+    color: #d97706;
+}
+
+
+.status-traite {
+    background: #ecfdf3;
+
+    color: var(--success);
+}
+
+
+.date-info {
+    color: var(--text);
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   ACTION
+===================================================== */
+
+.action-button {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    transition: 0.25s ease;
+}
+
+
+.action-button:hover {
+    background: var(--primary);
+
+    color: white;
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty-dashboard {
+    padding: 80px 20px;
+
+    text-align: center;
+}
+
+
+.empty-dashboard-icon {
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 30px;
+}
+
+
+.empty-dashboard h3 {
+    margin-bottom: 8px;
+
+    font-size: 20px;
+}
+
+
+.empty-dashboard p {
+    color: var(--text);
+}
+
+.zeyan{
+    font-size: 13px !important;
+}
+
+
+/* =====================================================
+   BOUTON MENU
+   INVISIBLE SUR DESKTOP + TABLETTE
+===================================================== */
+
+.sidebar-toggle {
+    display: none;
+
+    position: fixed;
+
+    top: 14px;
+    right: 14px;
+
+    width: 46px;
+    height: 46px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #1f2937;
+
+    font-size: 24px;
+
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    z-index: 1100;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.12);
+}
+
+
+/* =====================================================
+   BOUTON FERMER
+   INVISIBLE SUR DESKTOP + TABLETTE
+===================================================== */
+
+.sidebar-close {
+    display: none;
+
+    position: absolute;
+
+    top: 18px;
+    right: 16px;
+
+    width: 38px;
+    height: 38px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    color: #ffffff;
+
+    font-size: 17px;
+
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    z-index: 10;
+
+    transition: 0.2s ease;
+}
+
+
+.sidebar-close:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+
+/* =====================================================
+   OVERLAY
+   INVISIBLE PAR DÉFAUT
+===================================================== */
+
+.sidebar-overlay {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    z-index: 999;
+
+    opacity: 0;
+
+    transition: opacity 0.3s ease;
+}
+
+
+.sidebar-overlay.active {
+    display: block;
+
+    opacity: 1;
+}
+
+
+/* =====================================================
+   =====================================================
+   RESPONSIVE MOBILE UNIQUEMENT
+   À PARTIR DE 768px
+   =====================================================
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    /* =================================================
+       BOUTON MENU
+    ================================================= */
+
+    .sidebar-toggle {
+        display: flex;
+    }
+
+
+    /* =================================================
+       SIDEBAR MOBILE
+    ================================================= */
+
+    .sidebar {
+        position: fixed;
+
+        top: 0;
+        left: 0;
+
+        width: 280px;
+
+        max-width: 88vw;
+
+        height: 100vh;
+        height: 100dvh;
+
+        padding: 25px 18px;
+
+        z-index: 1000;
+
+        transform: translateX(-100%);
+
+        transition:
+            transform 0.35s cubic-bezier(
+                0.4,
+                0,
+                0.2,
+                1
+            );
+
+        overflow-y: auto;
+
+        overflow-x: hidden;
+
+        box-shadow:
+            8px 0 30px
+            rgba(0, 0, 0, 0.18);
+    }
+
+
+    /* =================================================
+       SIDEBAR OUVERTE
+    ================================================= */
+
+    .sidebar.sidebar-open {
+        transform: translateX(0);
+    }
+
+
+    /* =================================================
+       BOUTON FERMER
+    ================================================= */
+
+    .sidebar-close {
+        display: flex;
+    }
+
+
+    /* =================================================
+       MAIN
+    ================================================= */
+
+    .dashboard-main {
+        width: 100%;
+
+        min-width: 0;
+
+        margin-left: 0 !important;
+
+        padding: 30px 20px;
+    }
+
+
+    /* =================================================
+       HEADER
+    ================================================= */
+
+    .dashboard-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding-top: 60px;
+
+        padding-left: 0;
+
+        padding-right: 0;
+
+        gap: 20px;
+
+        margin-bottom: 35px;
+    }
+
+
+    .dashboard-header h1 {
+        font-size: 26px;
+    }
+
+
+    .dashboard-header p {
+        font-size: 14px;
+
+        line-height: 1.5;
+    }
+
+
+    .visit-site-button {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    /* =================================================
+       STATISTIQUES
+    ================================================= */
+
+    .statistics-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 14px;
+
+        margin-bottom: 35px;
+    }
+
+
+    .stat-card {
+        padding: 18px;
+
+        gap: 13px;
+    }
+
+
+    .stat-icon {
+        width: 46px;
+        height: 46px;
+
+        font-size: 20px;
+    }
+
+
+    .stat-content strong {
+        font-size: 22px;
+    }
+
+
+    .stat-content span {
+        font-size: 11px;
+    }
+
+
+    /* =================================================
+       SECTION REPORTS
+    ================================================= */
+
+    .section-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
+
+        margin-bottom: 15px;
+    }
+
+
+    .section-header h2 {
+        font-size: 21px;
+    }
+
+
+    /* =================================================
+       TABLEAU MOBILE
+    ================================================= */
+
+    .reports-table-container {
+        width: 100%;
+
+        overflow-x: auto;
+
+        overflow-y: hidden;
+
+        -webkit-overflow-scrolling: touch;
+
+        border-radius: 14px;
+    }
+
+
+    .reports-table {
+        min-width: 850px;
+
+        width: 850px;
+    }
+
+
+    /* =================================================
+       BLOQUER LE SCROLL DU SITE
+       QUAND LE MENU EST OUVERT
+    ================================================= */
+
+    body.sidebar-is-open {
+        overflow: hidden;
+    }
+}
+
+
+/* =====================================================
+   PETIT TÉLÉPHONE
+   <= 576px
+===================================================== */
+
+@media (max-width: 576px) {
+
+    /* -----------------------------------------------
+       MENU
+    ------------------------------------------------ */
+
+    .sidebar {
+        width: 275px;
+
+        max-width: 88vw;
+    }
+
+
+    .sidebar-toggle {
+        width: 44px;
+        height: 44px;
+
+        top: 14px;
+        right: 14px;
+
+        font-size: 23px;
+    }
+
+
+    /* -----------------------------------------------
+       MAIN
+    ------------------------------------------------ */
+
+    .dashboard-main {
+        padding: 20px 15px 30px;
+    }
+
+
+    /* -----------------------------------------------
+       HEADER
+    ------------------------------------------------ */
+
+    .dashboard-header {
+        padding-top: 65px;
+
+        margin-bottom: 30px;
+    }
+
+
+    .dashboard-header h1 {
+        font-size: 23px;
+    }
+
+
+    .dashboard-header p {
+        font-size: 13px;
+
+        line-height: 1.5;
+    }
+
+
+    /* -----------------------------------------------
+       STATISTIQUES
+    ------------------------------------------------ */
+
+    .statistics-grid {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+
+    .stat-card {
+        width: 100%;
+
+        padding: 18px;
+    }
+
+
+    /* -----------------------------------------------
+       REPORTS
+    ------------------------------------------------ */
+
+    .reports-section {
+        width: 100%;
+    }
+
+
+    .section-header {
+        gap: 10px;
+    }
+
+
+    .section-header h2 {
+        font-size: 20px;
+    }
+
+
+    .reports-number {
+        font-size: 11px !important;
+    }
+}
+
+
+/* =====================================================
+   TRÈS PETIT TÉLÉPHONE
+   <= 400px
+===================================================== */
+
+@media (max-width: 400px) {
+
+    .sidebar {
+        width: 260px;
+    }
+
+
+    .sidebar-toggle {
+        width: 42px;
+        height: 42px;
+
+        font-size: 22px;
+    }
+
+
+    .dashboard-main {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+
+    .dashboard-header {
+        padding-top: 62px;
+    }
+
+
+    .dashboard-header h1 {
+        font-size: 20px;
+    }
+
+
+    .dashboard-header p {
+        font-size: 12px;
+    }
+
+
+    .stat-card {
+        padding: 16px;
+    }
+
+
+    .stat-icon {
+        width: 44px;
+        height: 44px;
+
+        font-size: 19px;
+    }
+
+
+    .stat-content strong {
+        font-size: 21px;
+    }
+}

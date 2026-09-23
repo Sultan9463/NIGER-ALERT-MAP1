@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tableau de bord | Niger Alert</title>
+
+
+    <!-- Bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <!-- CSS ADMIN -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_dashboard.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- BOUTON MENU TABLETTE / MOBILE -->
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Ouvrir le menu"
+        aria-controls="adminSidebar" aria-expanded="false">
+        <i class="bi bi-list"></i>
+    </button>
+
+
+    <!-- FOND DERRIÈRE LE MENU -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+    <aside class="sidebar" id="adminSidebar">
+
+        <!-- BOUTON FERMER -->
+        <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Fermer le menu">
+            <i class="bi bi-x-lg"></i>
+        </button>
+
+        <!-- LOGO -->
+
+        <div class="sidebar-logo">
+
+
+            <div class="sidebar-logo-icon">
+
+                <i class="bi bi-shield-check"></i>
+
+            </div>
+
+
+            <div class="sidebar-logo-text">
+
+                <span>NIGER</span>
+
+                <strong>ALERT</strong>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- MENU -->
+
+        <nav class="sidebar-menu">
+
+
+            <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link active">
+
+                <i class="bi bi-grid-1x2-fill"></i>
+
+                Tableau de bord
+
+            </a>
+
+
+            <a href="{{ url_for('report') }}" class="sidebar-link">
+
+                <i class="bi bi-clipboard-data"></i>
+
+                Signaler un incident
+
+            </a>
+
+            <a href="{{ url_for('admin_statistics') }}" class="sidebar-link">
+
+                <i class="bi bi-bar-chart-line-fill"></i>
+
+                Statistiques
+
+            </a> 
+
+            <a class="sidebar-link" href="{{ url_for('map_page') }}">
+                <i class="bi bi-map"></i>
+                Carte
+            </a>
+
+
+            <a href="{{ url_for('alerts') }}" class="sidebar-link">
+
+                <i class="bi bi-eye"></i>
+
+                Signalements récents
+
+            </a>
+
+
+
+
+        </nav>
+
+
+
+        <!-- ADMIN PROFILE -->
+
+        <div class="sidebar-bottom">
+
+
+            <div class="admin-profile">
+
+
+                <div class="admin-avatar">
+
+                    <i class="bi bi-person"></i>
+
+                </div>
+
+
+                <div class="admin-info">
+
+                    <strong>
+
+                        {{ current_user.username }}
+
+                    </strong>
+
+
+                    <span>
+
+                        Administrateur
+
+                    </span>
+
+
+                </div>
+
+
+
+
+            </div>
+
+            {% if current_user.role == "principal" %}
+
+            <a href="{{ url_for('administrators') }}" class="btn zeyan btn-outline-secondary">
+
+                <i class="bi bi-people"></i>
+
+                Gestion des administrateurs
+
+            </a>
+
+            {% endif %}
+
+            <a href="{{ url_for('admin_logout') }}" class="logout-button">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                Déconnexion
+
+            </a>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- ================= HEADER ================= -->
+
+        <header class="dashboard-header">
+
+
+            <div>
+
+
+                <span class="dashboard-label">
+
+                    ESPACE ADMINISTRATEUR
+
+                </span>
+
+
+                <h1>
+
+                    Bonjour, {{ current_user.username }} 👋
+
+                </h1>
+
+
+                <p>
+
+                    Voici un aperçu des signalements
+                    sur la plateforme Niger Alert.
+
+                </p>
+
+
+            </div>
+
+
+            <a href="{{ url_for('index') }}" class="visit-site-button">
+
+                <i class="bi bi-globe"></i>
+
+                Voir le site
+
+            </a>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <section class="statistics-grid">
+
+
+            <!-- TOTAL -->
+
+            <article class="stat-card">
+
+
+                <div class="stat-icon stat-icon-blue">
+
+                    <i class="bi bi-clipboard-data"></i>
+
+                </div>
+
+
+                <div class="stat-content">
+
+                    <span>
+
+                        Total signalements
+
+                    </span>
+
+
+                    <strong>
+
+                        {{ total_reports }}
+
+                    </strong>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <!-- PENDING -->
+
+            <article class="stat-card">
+
+
+                <div class="stat-icon stat-icon-orange">
+
+                    <i class="bi bi-hourglass-split"></i>
+
+                </div>
+
+
+                <div class="stat-content">
+
+                    <span>
+
+                        En attente
+
+                    </span>
+
+
+                    <strong>
+
+                        {{ pending_reports }}
+
+                    </strong>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <!-- PROCESSED -->
+
+            <article class="stat-card">
+
+
+                <div class="stat-icon stat-icon-green">
+
+                    <i class="bi bi-check-circle"></i>
+
+                </div>
+
+
+                <div class="stat-content">
+
+                    <span>
+
+                        Traités
+
+                    </span>
+
+
+                    <strong>
+
+                        {{ processed_reports }}
+
+                    </strong>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <!-- URGENT -->
+
+            <article class="stat-card">
+
+
+                <div class="stat-icon stat-icon-red">
+
+                    <i class="bi bi-exclamation-triangle"></i>
+
+                </div>
+
+
+                <div class="stat-content">
+
+                    <span>
+
+                        Urgents
+
+                    </span>
+
+
+                    <strong>
+
+                        {{ reports
+                        | selectattr("urgency", "equalto", "elevee")
+                        | list
+                        | length }}
+
+                    </strong>
+
+
+                </div>
+
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             REPORTS
+        ================================================== -->
+
+        <section class="reports-section" id="reports">
+
+
+            <div class="section-header">
+
+
+                <div>
+
+
+                    <span>
+
+                        GESTION
+
+                    </span>
+
+
+                    <h2>
+
+                        Signalements récents
+
+                    </h2>
+
+
+                </div>
+
+
+                <span class="reports-number">
+
+                    {{ reports|length }}
+                    signalement(s)
+
+                </span>
+
+
+            </div>
+
+
+
+            <!-- TABLE -->
+
+            <div class="reports-table-container">
+
+
+                {% if reports %}
+
+
+                <div class="table-responsive">
+
+
+                    <table class="reports-table">
+
+
+                        <thead>
+
+
+                            <tr>
+
+                                <th>
+
+                                    Incident
+
+                                </th>
+
+
+                                <th>
+
+                                    Localisation
+
+                                </th>
+
+
+                                <th>
+
+                                    Urgence
+
+                                </th>
+
+
+                                <th>
+
+                                    Statut
+
+                                </th>
+
+
+                                <th>
+
+                                    Date
+
+                                </th>
+
+
+                                <th>
+
+                                    Action
+
+                                </th>
+
+
+                            </tr>
+
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            {% for report in reports %}
+
+
+                            <tr>
+
+
+                                <!-- INCIDENT -->
+
+                                <td>
+
+
+                                    <div class="incident-info">
+
+
+                                        <div class="incident-icon">
+
+
+                                            {% if report.incident_type == "inondation" %}
+
+                                            <i class="bi bi-water"></i>
+
+
+                                            {% elif report.incident_type == "incendie" %}
+
+                                            <i class="bi bi-fire"></i>
+
+
+                                            {% elif report.incident_type == "route" %}
+
+                                            <i class="bi bi-cone-striped"></i>
+
+
+                                            {% else %}
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+
+                                            {% endif %}
+
+
+                                        </div>
+
+
+                                        <div>
+
+
+                                            <strong>
+
+                                                {{ report.title }}
+
+                                            </strong>
+
+
+                                            <span>
+
+                                                {{ report.incident_type|capitalize }}
+
+                                            </span>
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </td>
+
+
+
+                                <!-- LOCATION -->
+
+                                <td>
+
+
+                                    <div class="location-info">
+
+
+                                        <i class="bi bi-geo-alt"></i>
+
+
+                                        <span>
+
+                                            {{ report.city }}
+
+                                        </span>
+
+
+                                    </div>
+
+
+                                </td>
+
+
+
+                                <!-- URGENCY -->
+
+                                <td>
+
+
+                                    <span class="urgency-badge
+                                                urgency-{{ report.urgency }}">
+
+
+                                        {% if report.urgency == "elevee" %}
+
+                                        <i class="bi bi-lightning-fill"></i>
+
+                                        {% endif %}
+
+
+                                        {{ report.urgency|capitalize }}
+
+
+                                    </span>
+
+
+                                </td>
+
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+
+                                    <span class="status-badge
+                                                status-{{ report.status|replace(' ', '-') }}">
+
+
+                                        {{ report.status|capitalize }}
+
+
+                                    </span>
+
+
+                                </td>
+
+
+
+                                <!-- DATE -->
+
+                                <td>
+
+
+                                    <span class="date-info">
+
+
+                                        {{ report.created_at.strftime('%d/%m/%Y') }}
+
+
+                                    </span>
+
+
+                                </td>
+
+
+                                <!-- ACTION -->
+
+                                <td>
+
+                                    <a href="{{ url_for('admin_report_detail', report_id=report.id) }}"
+                                        class="action-button" title="Gérer le signalement">
+
+                                        <i class="bi bi-arrow-right-circle"></i>
+
+                                    </a>
+
+                                </td>
+
+
+                            </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+                {% else %}
+
+
+                <!-- EMPTY STATE -->
+
+                <div class="empty-dashboard">
+
+
+                    <div class="empty-dashboard-icon">
+
+                        <i class="bi bi-inbox"></i>
+
+                    </div>
+
+
+                    <h3>
+
+                        Aucun signalement
+
+                    </h3>
+
+
+                    <p>
+
+                        Les nouveaux signalements apparaîtront ici.
+
+                    </p>
+
+
+                </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const sidebar =
+                document.getElementById("adminSidebar");
+
+            const sidebarToggle =
+                document.getElementById("sidebarToggle");
+
+            const sidebarClose =
+                document.getElementById("sidebarClose");
+
+            const sidebarOverlay =
+                document.getElementById("sidebarOverlay");
+
+
+            /* =====================================================
+               OUVRIR LA SIDEBAR
+            ===================================================== */
+
+            function openSidebar() {
+
+                sidebar.classList.add("sidebar-open");
+
+                sidebarOverlay.classList.add("active");
+
+                sidebarToggle.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+                document.body.classList.add(
+                    "sidebar-is-open"
+                );
+
+            }
+
+
+            /* =====================================================
+               FERMER LA SIDEBAR
+            ===================================================== */
+
+            function closeSidebar() {
+
+                sidebar.classList.remove(
+                    "sidebar-open"
+                );
+
+                sidebarOverlay.classList.remove(
+                    "active"
+                );
+
+                sidebarToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                document.body.classList.remove(
+                    "sidebar-is-open"
+                );
+
+            }
+
+
+            /* =====================================================
+               CLIQUER SUR MENU
+            ===================================================== */
+
+            sidebarToggle.addEventListener(
+                "click",
+                function () {
+
+                    const isOpen =
+                        sidebar.classList.contains(
+                            "sidebar-open"
+                        );
+
+
+                    if (isOpen) {
+
+                        closeSidebar();
+
+                    } else {
+
+                        openSidebar();
+
+                    }
+
+                }
+            );
+
+
+            /* =====================================================
+               BOUTON X
+            ===================================================== */
+
+            sidebarClose.addEventListener(
+                "click",
+                function () {
+
+                    closeSidebar();
+
+                }
+            );
+
+
+            /* =====================================================
+               CLIQUER SUR L'OVERLAY
+            ===================================================== */
+
+            sidebarOverlay.addEventListener(
+                "click",
+                function () {
+
+                    closeSidebar();
+
+                }
+            );
+
+
+            /* =====================================================
+               TOUCHE ESC
+            ===================================================== */
+
+            document.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key === "Escape"
+                    ) {
+
+                        closeSidebar();
+
+                    }
+
+                }
+            );
+
+
+            /* =====================================================
+               CLIQUER SUR UN LIEN
+               
+               Sur tablette/mobile, le menu se ferme
+               après avoir choisi une page.
+            ===================================================== */
+
+            const sidebarLinks =
+                document.querySelectorAll(
+                    ".sidebar-link"
+                );
+
+
+            sidebarLinks.forEach(
+                function (link) {
+
+                    link.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                window.innerWidth <= 1024
+                            ) {
+
+                                closeSidebar();
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+            /* =====================================================
+               REDIMENSIONNEMENT
+               
+               Si on repasse en desktop,
+               on remet la sidebar dans son état normal.
+            ===================================================== */
+
+            window.addEventListener(
+                "resize",
+                function () {
+
+                    if (
+                        window.innerWidth > 1024
+                    ) {
+
+                        closeSidebar();
+
+                    }
+
+                }
+            );
+
+        });
+
+    </script>
+
+
+
+
+</body>
+
+</html>

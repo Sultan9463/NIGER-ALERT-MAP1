@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Statistiques | Niger Alert</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/admin_statistics.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     MENU MOBILE
+===================================================== -->
+
+<button type="button"
+        class="sidebar-toggle"
+        id="sidebarToggle"
+        aria-label="Ouvrir le menu"
+        aria-controls="adminSidebar"
+        aria-expanded="false">
+
+    <i class="bi bi-list"></i>
+
+</button>
+
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="adminSidebar">
+
+
+    <button type="button"
+            class="sidebar-close"
+            id="sidebarClose"
+            aria-label="Fermer le menu">
+
+        <i class="bi bi-x-lg"></i>
+
+    </button>
+
+
+    <!-- LOGO -->
+
+    <div class="sidebar-logo">
+
+        <div class="sidebar-logo-icon">
+
+            <i class="bi bi-shield-check"></i>
+
+        </div>
+
+        <div class="sidebar-logo-text">
+
+            <span>NIGER</span>
+
+            <strong>ALERT</strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <nav class="sidebar-menu">
+
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="sidebar-link">
+
+            <i class="bi bi-grid-1x2-fill"></i>
+
+            Tableau de bord
+
+        </a>
+
+
+        <a href="{{ url_for('report') }}"
+           class="sidebar-link">
+
+            <i class="bi bi-clipboard-data"></i>
+
+            Signalements
+
+        </a>
+
+
+        <a href="{{ url_for('admin_statistics') }}"
+           class="sidebar-link active">
+
+            <i class="bi bi-bar-chart-line-fill"></i>
+
+            Statistiques
+
+        </a>
+
+
+        <a href="{{ url_for('alerts') }}"
+           class="sidebar-link">
+
+            <i class="bi bi-eye"></i>
+
+            Voir le site public
+
+        </a>
+
+
+    </nav>
+
+
+    <!-- =================================================
+         BAS SIDEBAR
+    ================================================= -->
+
+    <div class="sidebar-bottom">
+
+
+        <div class="admin-profile">
+
+            <div class="admin-avatar">
+
+                <i class="bi bi-person"></i>
+
+            </div>
+
+
+            <div class="admin-info">
+
+                <strong>
+
+                    {{ current_user.username }}
+
+                </strong>
+
+                <span>
+
+                    Administrateur
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        {% if current_user.role == "principal" %}
+
+        <a href="{{ url_for('administrators') }}"
+           class="admin-button">
+
+            <i class="bi bi-people"></i>
+
+            Gestion des administrateurs
+
+        </a>
+
+        {% endif %}
+
+
+        <a href="{{ url_for('admin_logout') }}"
+           class="logout-button">
+
+            <i class="bi bi-box-arrow-right"></i>
+
+            Déconnexion
+
+        </a>
+
+
+    </div>
+
+
+</aside>
+
+
+<!-- =====================================================
+     CONTENU PRINCIPAL
+===================================================== -->
+
+<main class="dashboard-main">
+
+
+    <!-- HEADER -->
+
+    <header class="dashboard-header">
+
+
+        <div>
+
+            <span class="dashboard-label">
+
+                ANALYSE DE LA PLATEFORME
+
+            </span>
+
+
+            <h1>
+
+                Statistiques 📊
+
+            </h1>
+
+
+            <p>
+
+                Analysez les signalements enregistrés
+                sur la plateforme Niger Alert.
+
+            </p>
+
+        </div>
+
+
+        <a href="{{ url_for('index') }}"
+           class="visit-site-button">
+
+            <i class="bi bi-globe"></i>
+
+            Voir le site
+
+        </a>
+
+
+    </header>
+
+
+    <!-- =================================================
+         CARTES STATISTIQUES
+    ================================================= -->
+
+    <section class="statistics-grid">
+
+
+        <!-- TOTAL -->
+
+        <article class="stat-card">
+
+            <div class="stat-icon blue">
+
+                <i class="bi bi-clipboard-data"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>Total signalements</span>
+
+                <strong>{{ total_reports }}</strong>
+
+            </div>
+
+        </article>
+
+
+        <!-- EN ATTENTE -->
+
+        <article class="stat-card">
+
+            <div class="stat-icon orange">
+
+                <i class="bi bi-hourglass-split"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>En attente</span>
+
+                <strong>{{ pending_reports }}</strong>
+
+            </div>
+
+        </article>
+
+
+        <!-- EN COURS -->
+
+        <article class="stat-card">
+
+            <div class="stat-icon purple">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>En cours</span>
+
+                <strong>{{ processing_reports }}</strong>
+
+            </div>
+
+        </article>
+
+
+        <!-- TRAITES -->
+
+        <article class="stat-card">
+
+            <div class="stat-icon green">
+
+                <i class="bi bi-check-circle"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>Traités</span>
+
+                <strong>{{ processed_reports }}</strong>
+
+            </div>
+
+        </article>
+
+
+        <!-- URGENTS -->
+
+        <article class="stat-card">
+
+            <div class="stat-icon red">
+
+                <i class="bi bi-exclamation-triangle"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <span>Signalements urgents</span>
+
+                <strong>{{ urgent_reports }}</strong>
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+    <!-- =================================================
+         TAUX DE TRAITEMENT
+    ================================================= -->
+
+    <section class="analysis-card">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <span>PERFORMANCE</span>
+
+                <h2>Taux de traitement</h2>
+
+            </div>
+
+
+            <div class="percentage">
+
+                {{ treatment_rate }}%
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-container">
+
+            <div class="progress-bar">
+
+                <div class="progress-value"
+                     style="width: {{ treatment_rate }}%;">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <p class="analysis-description">
+
+            {{ processed_reports }} signalement(s)
+            sur {{ total_reports }} ont été traités.
+
+        </p>
+
+
+    </section>
+
+
+    <!-- =================================================
+         GRAPHIQUES
+    ================================================= -->
+
+    <section class="charts-grid">
+
+
+        <!-- TYPES D'INCIDENTS -->
+
+        <article class="chart-card">
+
+
+            <div class="chart-header">
+
+                <div>
+
+                    <span>RÉPARTITION</span>
+
+                    <h2>Types d'incidents</h2>
+
+                </div>
+
+                <i class="bi bi-pie-chart"></i>
+
+            </div>
+
+
+            <div class="chart-wrapper">
+
+                <canvas id="incidentChart"></canvas>
+
+            </div>
+
+
+        </article>
+
+
+
+        <!-- STATUTS -->
+
+        <article class="chart-card">
+
+
+            <div class="chart-header">
+
+                <div>
+
+                    <span>STATUTS</span>
+
+                    <h2>État des signalements</h2>
+
+                </div>
+
+                <i class="bi bi-bar-chart"></i>
+
+            </div>
+
+
+            <div class="chart-wrapper">
+
+                <canvas id="statusChart"></canvas>
+
+            </div>
+
+
+        </article>
+
+
+    </section>
+
+
+    <!-- =================================================
+         RÉPARTITION PAR RÉGION
+    ================================================= -->
+
+    <section class="analysis-card">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <span>LOCALISATION</span>
+
+                <h2>Signalements par région</h2>
+
+            </div>
+
+            <i class="bi bi-geo-alt"></i>
+
+        </div>
+
+
+        <div class="region-list">
+
+
+            {% for region, count in region_statistics %}
+
+            <div class="region-item">
+
+
+                <div class="region-name">
+
+                    <span>
+
+                        {{ region }}
+
+                    </span>
+
+                    <strong>
+
+                        {{ count }}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="region-progress">
+
+                    <div class="region-progress-value"
+                         style="width: {{ (count / total_reports * 100) if total_reports else 0 }}%;">
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <i class="bi bi-bar-chart"></i>
+
+                <p>
+
+                    Aucune donnée disponible.
+
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     CHART.JS
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+    /* =====================================================
+       TYPES D'INCIDENTS
+    ===================================================== */
+
+    const incidentData = {
+
+        labels: {{ incident_labels | tojson }},
+
+        datasets: [{
+
+            data: {{ incident_values | tojson }},
+
+            borderWidth: 0
+
+        }]
+
+    };
+
+
+    new Chart(
+
+        document.getElementById("incidentChart"),
+
+        {
+
+            type: "doughnut",
+
+            data: incidentData,
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom"
+
+                    }
+
+                },
+
+                cutout: "65%"
+
+            }
+
+        }
+
+    );
+
+
+
+    /* =====================================================
+       STATUTS
+    ===================================================== */
+
+    const statusData = {
+
+        labels: {{ status_labels | tojson }},
+
+        datasets: [{
+
+            label: "Signalements",
+
+            data: {{ status_values | tojson }},
+
+            borderWidth: 0,
+
+            borderRadius: 8
+
+        }]
+
+    };
+
+
+    new Chart(
+
+        document.getElementById("statusChart"),
+
+        {
+
+            type: "bar",
+
+            data: statusData,
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        display: false
+
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        ticks: {
+
+                            precision: 0
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    );
+
+
+</script>
+
+
+<!-- =====================================================
+     SIDEBAR JS
+===================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    const sidebar =
+        document.getElementById("adminSidebar");
+
+    const sidebarToggle =
+        document.getElementById("sidebarToggle");
+
+    const sidebarClose =
+        document.getElementById("sidebarClose");
+
+    const sidebarOverlay =
+        document.getElementById("sidebarOverlay");
+
+
+    function openSidebar() {
+
+        sidebar.classList.add("sidebar-open");
+
+        sidebarOverlay.classList.add("active");
+
+        sidebarToggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        document.body.classList.add(
+            "sidebar-is-open"
+        );
+
+    }
+
+
+    function closeSidebar() {
+
+        sidebar.classList.remove(
+            "sidebar-open"
+        );
+
+        sidebarOverlay.classList.remove(
+            "active"
+        );
+
+        sidebarToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        document.body.classList.remove(
+            "sidebar-is-open"
+        );
+
+    }
+
+
+    sidebarToggle.addEventListener(
+        "click",
+        function () {
+
+            if (
+                sidebar.classList.contains(
+                    "sidebar-open"
+                )
+            ) {
+
+                closeSidebar();
+
+            } else {
+
+                openSidebar();
+
+            }
+
+        }
+    );
+
+
+    sidebarClose.addEventListener(
+        "click",
+        closeSidebar
+    );
+
+
+    sidebarOverlay.addEventListener(
+        "click",
+        closeSidebar
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    const sidebarLinks =
+        document.querySelectorAll(
+            ".sidebar-link"
+        );
+
+
+    sidebarLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    if (
+                        window.innerWidth <= 576
+                    ) {
+
+                        closeSidebar();
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (
+                window.innerWidth > 576
+            ) {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+});
+
+</script>
+
+
+</body>
+
+</html>

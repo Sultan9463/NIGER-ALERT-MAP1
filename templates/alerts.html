@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Signalements | Niger Alert</title>
+
+
+    <!-- Bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <!-- CSS principal -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <!-- CSS spécifique -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/alerts.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar navbar-expand-lg alerts-navbar">
+
+        <div class="container">
+
+
+            <!-- LOGO -->
+
+            <a class="navbar-brand d-flex align-items-center"
+               href="{{ url_for('index') }}">
+
+
+                <div class="logo-icon">
+
+                    <i class="bi bi-shield-check"></i>
+
+                </div>
+
+
+                <div class="logo-text">
+
+                    <span>NIGER</span>
+
+                    <strong>ALERT</strong>
+
+                </div>
+
+
+            </a>
+
+
+
+            <div class="d-flex align-items-center gap-3">
+
+
+                <a href="{{ url_for('index') }}"
+                   class="nav-link-custom">
+
+                    <i class="bi bi-house-door"></i>
+
+                    Accueil
+
+                </a>
+
+
+                <a href="{{ url_for('report') }}"
+                   class="new-report-button">
+
+                    <i class="bi bi-plus-circle"></i>
+
+                    Nouveau signalement
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= HEADER ================= -->
+
+    <section class="alerts-header">
+
+        <div class="container">
+
+
+            <div class="alerts-header-content">
+
+
+                <div>
+
+                    <span class="page-label">
+
+                        SUIVI DES INCIDENTS
+
+                    </span>
+
+
+                    <h1>
+
+                        Signalements récents
+
+                    </h1>
+
+
+                    <p>
+
+                        Consultez les situations signalées
+                        par les utilisateurs de Niger Alert.
+
+                    </p>
+
+
+                </div>
+
+
+                <div class="alerts-count">
+
+
+                    <i class="bi bi-exclamation-circle"></i>
+
+
+                    <div>
+
+                        <strong>
+
+                            {{ reports|length }}
+
+                        </strong>
+
+
+                        <span>
+
+                            signalement(s)
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= ALERTS ================= -->
+
+    <main class="alerts-main">
+
+
+        <div class="container">
+
+
+            {% if reports %}
+
+
+                <div class="row g-4">
+
+
+                    {% for report in reports %}
+
+
+                        <div class="col-lg-6">
+
+
+                            <article class="alert-card">
+
+
+                                <!-- CARD HEADER -->
+
+                                <div class="alert-card-header">
+
+
+                                    <div class="incident-badge
+                                        incident-{{ report.incident_type }}">
+
+
+                                        {% if report.incident_type == "inondation" %}
+
+                                            <i class="bi bi-water"></i>
+
+                                        {% elif report.incident_type == "route" %}
+
+                                            <i class="bi bi-cone-striped"></i>
+
+                                        {% elif report.incident_type == "incendie" %}
+
+                                            <i class="bi bi-fire"></i>
+
+                                        {% else %}
+
+                                            <i class="bi bi-exclamation-circle"></i>
+
+                                        {% endif %}
+
+
+                                        {{ report.incident_type|capitalize }}
+
+                                    </div>
+
+
+
+                                    <span class="status-badge
+                                        status-{{ report.status|replace(' ', '-') }}">
+
+                                        {{ report.status|capitalize }}
+
+                                    </span>
+
+
+                                </div>
+
+
+
+                                <!-- TITLE -->
+
+                                <h3>
+
+                                    {{ report.title }}
+
+                                </h3>
+
+
+
+                                <!-- DESCRIPTION -->
+
+                                <p class="alert-description">
+
+                                    {{ report.description }}
+
+                                </p>
+
+
+
+                                <!-- LOCATION -->
+
+                                <div class="alert-location">
+
+
+                                    <i class="bi bi-geo-alt"></i>
+
+
+                                    <span>
+
+                                        {{ report.city }}
+
+                                        {% if report.address %}
+
+                                            — {{ report.address }}
+
+                                        {% endif %}
+
+                                    </span>
+
+
+                                </div>
+
+
+
+                                <!-- FOOTER -->
+
+                                <div class="alert-card-footer">
+
+
+                                    <!-- URGENCY -->
+
+                                    <span class="urgency-badge
+                                        urgency-{{ report.urgency }}">
+
+                                        <i class="bi bi-lightning-charge"></i>
+
+                                        Urgence :
+                                        {{ report.urgency|capitalize }}
+
+                                    </span>
+
+
+
+                                    <!-- DATE -->
+
+                                    <span class="alert-date">
+
+                                        <i class="bi bi-clock"></i>
+
+                                        {{ report.created_at.strftime('%d/%m/%Y à %H:%M') }}
+
+                                    </span>
+
+
+                                </div>
+
+
+                            </article>
+
+
+                        </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- EMPTY STATE -->
+
+                <div class="empty-alerts">
+
+
+                    <div class="empty-icon">
+
+                        <i class="bi bi-inbox"></i>
+
+                    </div>
+
+
+                    <h3>
+
+                        Aucun signalement pour le moment
+
+                    </h3>
+
+
+                    <p>
+
+                        Aucun incident n'a encore été signalé
+                        sur la plateforme.
+
+                    </p>
+
+
+                    <a href="{{ url_for('report') }}"
+                       class="new-report-button">
+
+                        <i class="bi bi-plus-circle"></i>
+
+                        Faire un signalement
+
+                    </a>
+
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="alerts-footer">
+
+
+        <div class="container">
+
+
+            <div class="d-flex flex-column flex-md-row
+                        justify-content-between
+                        align-items-center
+                        gap-3">
+
+
+                <p>
+
+                    © 2026 Niger Alert.
+                    Tous droits réservés.
+
+                </p>
+
+
+                <a href="{{ url_for('index') }}">
+
+                    <i class="bi bi-house-door"></i>
+
+                    Retour à l'accueil
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    </footer>
+
+
+    <!-- Bootstrap JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>
+

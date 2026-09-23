@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Signaler un incident sur Niger Alert.">
+
+    <title>Signaler un incident | Niger Alert</title>
+
+
+    <!-- Bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar navbar-expand-lg report-navbar">
+
+        <div class="container">
+
+
+            <!-- LOGO -->
+
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+
+
+                <div class="logo-icon">
+
+                    <i class="bi bi-shield-check"></i>
+
+                </div>
+
+
+                <div class="logo-text">
+
+                    <span>NIGER</span>
+
+                    <strong>ALERT</strong>
+
+                </div>
+
+
+            </a>
+
+
+
+            <!-- RETOUR -->
+
+            <a href="{{ url_for('index') }}" class="back-home">
+
+                <i class="bi bi-arrow-left"></i>
+
+                <span>Retour à l'accueil</span>
+
+            </a>
+
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= HEADER ================= -->
+
+    <section class="report-header">
+
+        <div class="container">
+
+
+            <div class="report-header-content">
+
+
+                <div class="report-header-icon">
+
+                    <i class="bi bi-exclamation-triangle"></i>
+
+                </div>
+
+
+                <div>
+
+
+                    <span class="report-label">
+
+                        NOUVEAU SIGNALEMENT
+
+                    </span>
+
+
+                    <h1>
+
+                        Signaler une situation
+
+                    </h1>
+
+
+                    <p>
+
+                        Votre signalement peut contribuer à protéger
+                        votre communauté et permettre une intervention
+                        plus rapide.
+
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= FORMULAIRE ================= -->
+
+    <main class="report-main">
+
+
+        <div class="container">
+
+
+            <div class="row g-4">
+
+
+                <!-- ================= FORM ================= -->
+
+                <div class="col-lg-8">
+
+
+                    <form class="report-form" action="{{ url_for('report') }}" method="POST"
+                        enctype="multipart/form-data">
+
+
+                        <!-- ================= TYPE INCIDENT ================= -->
+
+                        <div class="form-section">
+
+
+                            <div class="form-section-title">
+
+
+                                <div class="section-number">
+
+                                    1
+
+                                </div>
+
+
+                                <div>
+
+                                    <h4>
+
+                                        Type d'incident
+
+                                    </h4>
+
+
+                                    <p>
+
+                                        Sélectionnez la situation que
+                                        vous souhaitez signaler.
+
+                                    </p>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="incident-types">
+
+
+                                <!-- INONDATION -->
+
+                                <label class="incident-card">
+
+                                    <input type="radio" name="incident_type" value="inondation" required>
+
+
+                                    <span class="incident-icon flood">
+
+                                        <i class="bi bi-water"></i>
+
+                                    </span>
+
+
+                                    <span>
+
+                                        Inondation
+
+                                    </span>
+
+
+                                </label>
+
+
+
+                                <!-- ROUTE -->
+
+                                <label class="incident-card">
+
+                                    <input type="radio" name="incident_type" value="route">
+
+
+                                    <span class="incident-icon road">
+
+                                        <i class="bi bi-cone-striped"></i>
+
+                                    </span>
+
+
+                                    <span>
+
+                                        Route dangereuse
+
+                                    </span>
+
+
+                                </label>
+
+
+
+                                <!-- INCENDIE -->
+
+                                <label class="incident-card">
+
+                                    <input type="radio" name="incident_type" value="incendie">
+
+
+                                    <span class="incident-icon fire">
+
+                                        <i class="bi bi-fire"></i>
+
+                                    </span>
+
+
+                                    <span>
+
+                                        Incendie
+
+                                    </span>
+
+
+                                </label>
+
+
+
+                                <!-- AUTRE -->
+
+                                <label class="incident-card">
+
+                                    <input type="radio" name="incident_type" value="autre">
+
+
+                                    <span class="incident-icon other">
+
+                                        <i class="bi bi-exclamation-circle"></i>
+
+                                    </span>
+
+
+                                    <span>
+
+                                        Autre
+
+                                    </span>
+
+
+                                </label>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ================= DESCRIPTION ================= -->
+
+                        <div class="form-section">
+
+
+                            <div class="form-section-title">
+
+
+                                <div class="section-number">
+
+                                    2
+
+                                </div>
+
+
+                                <div>
+
+                                    <h4>
+
+                                        Décrivez la situation
+
+                                    </h4>
+
+
+                                    <p>
+
+                                        Donnez suffisamment de détails
+                                        pour faciliter la compréhension
+                                        de la situation.
+
+                                    </p>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- TITRE -->
+
+                            <div class="mb-4">
+
+
+                                <label class="form-label">
+
+                                    Titre du signalement
+
+                                </label>
+
+
+                                <input type="text" class="form-control custom-input" name="title"
+                                    placeholder="Exemple : Inondation importante dans le quartier..." required>
+
+
+                            </div>
+
+
+
+                            <!-- DESCRIPTION -->
+
+                            <div>
+
+
+                                <label class="form-label">
+
+                                    Description
+
+                                </label>
+
+
+                                <textarea class="form-control custom-input" name="description" rows="6"
+                                    placeholder="Décrivez la situation, les risques observés et les personnes potentiellement concernées..."
+                                    required></textarea>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ================= LOCALISATION ================= -->
+
+                        <div class="form-section">
+
+
+                            <div class="form-section-title">
+
+
+                                <div class="section-number">
+
+                                    3
+
+                                </div>
+
+
+                                <div>
+
+                                    <h4>
+
+                                        Localisation
+
+                                    </h4>
+
+
+                                    <p>
+
+                                        Indiquez l'endroit où la situation
+                                        a été observée.
+
+                                    </p>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="row g-3">
+
+
+                                <!-- REGION -->
+
+                                <div class="col-md-6">
+
+
+                                    <label class="form-label">
+
+                                        Région
+
+                                    </label>
+
+
+                                    <select class="form-select custom-input" name="region" required>
+
+
+                                        <option value="">
+
+                                            Sélectionnez une région
+
+                                        </option>
+
+
+                                        <option value="niamey">
+
+                                            Niamey
+
+                                        </option>
+
+
+                                        <option value="agadez">
+
+                                            Agadez
+
+                                        </option>
+
+
+                                        <option value="diffa">
+
+                                            Diffa
+
+                                        </option>
+
+
+                                        <option value="dosso">
+
+                                            Dosso
+
+                                        </option>
+
+
+                                        <option value="maradi">
+
+                                            Maradi
+
+                                        </option>
+
+
+                                        <option value="tahoua">
+
+                                            Tahoua
+
+                                        </option>
+
+
+                                        <option value="tillaberi">
+
+                                            Tillabéri
+
+                                        </option>
+
+
+                                        <option value="zinder">
+
+                                            Zinder
+
+                                        </option>
+
+
+                                    </select>
+
+
+                                </div>
+
+
+
+                                <!-- VILLE -->
+
+                                <div class="col-md-6">
+
+
+                                    <label class="form-label">
+
+                                        Ville / Localité
+
+                                    </label>
+
+
+                                    <input type="text" class="form-control custom-input" name="city"
+                                        placeholder="Exemple : Niamey" required>
+
+
+                                </div>
+
+
+
+                                <!-- ADRESSE -->
+
+                                <div class="col-12">
+
+
+                                    <label class="form-label">
+
+                                        Quartier ou adresse
+
+                                    </label>
+
+
+                                    <input type="text" class="form-control custom-input" name="address"
+                                        placeholder="Exemple : Quartier Yantala">
+
+
+                                </div>
+
+
+                            </div>
+
+                            <!-- GEOLOCALISATION -->
+
+                            <input type="hidden" name="latitude" id="latitude">
+
+                            <input type="hidden" name="longitude" id="longitude">
+
+
+                            <button type="button" class="location-button" id="locationButton">
+
+                                <i class="bi bi-crosshair"></i>
+
+                                Utiliser ma position actuelle
+
+                            </button>
+
+                            <p class="location-info" id="locationStatus">
+
+
+                                Votre position sera utilisée uniquement
+                                pour localiser précisément le signalement.
+
+
+                            </p>
+
+
+                        </div>
+
+
+
+                        <!-- ================= URGENCE ================= -->
+
+                        <div class="form-section">
+
+
+                            <div class="form-section-title">
+
+
+                                <div class="section-number">
+
+                                    4
+
+                                </div>
+
+
+                                <div>
+
+                                    <h4>
+
+                                        Niveau d'urgence
+
+                                    </h4>
+
+
+                                    <p>
+
+                                        Évaluez la gravité de la situation.
+
+                                    </p>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="urgency-options">
+
+
+                                <label class="urgency-option low">
+
+                                    <input type="radio" name="urgency" value="faible" required>
+
+
+                                    <span class="urgency-radio"></span>
+
+
+                                    <div>
+
+                                        <strong>
+
+                                            Faible
+
+                                        </strong>
+
+
+                                        <small>
+
+                                            Situation à surveiller
+
+                                        </small>
+
+                                    </div>
+
+
+                                </label>
+
+
+
+                                <label class="urgency-option medium">
+
+                                    <input type="radio" name="urgency" value="moyenne">
+
+
+                                    <span class="urgency-radio"></span>
+
+
+                                    <div>
+
+                                        <strong>
+
+                                            Moyenne
+
+                                        </strong>
+
+
+                                        <small>
+
+                                            Attention nécessaire
+
+                                        </small>
+
+                                    </div>
+
+
+                                </label>
+
+
+
+                                <label class="urgency-option high">
+
+                                    <input type="radio" name="urgency" value="elevee">
+
+
+                                    <span class="urgency-radio"></span>
+
+
+                                    <div>
+
+                                        <strong>
+
+                                            Élevée
+
+                                        </strong>
+
+
+                                        <small>
+
+                                            Intervention rapide nécessaire
+
+                                        </small>
+
+                                    </div>
+
+
+                                </label>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ================= PHOTO ================= -->
+
+                        <div class="form-section">
+
+
+                            <div class="form-section-title">
+
+
+                                <div class="section-number">
+
+                                    5
+
+                                </div>
+
+
+                                <div>
+
+                                    <h4>
+
+                                        Ajouter une photo
+
+                                    </h4>
+
+
+                                    <p>
+
+                                        Une photo peut aider à mieux
+                                        comprendre la situation.
+
+                                    </p>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="upload-area" id="uploadArea">
+
+
+                                <input type="file" id="imageUpload" name="image" accept="image/*">
+
+
+                                <div class="upload-content">
+
+
+                                    <div class="upload-icon">
+
+                                        <i class="bi bi-cloud-arrow-up"></i>
+
+                                    </div>
+
+
+                                    <h5>
+
+                                        Ajouter une photo
+
+                                    </h5>
+
+
+                                    <p>
+
+                                        Cliquez ici pour sélectionner
+                                        une image.
+
+                                    </p>
+
+
+                                    <small>
+
+                                        JPG, PNG ou WEBP
+
+                                    </small>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- PREVIEW -->
+
+                            <div class="image-preview-container" id="imagePreviewContainer">
+
+
+                                <img id="imagePreview" src="" alt="Aperçu du signalement">
+
+
+                                <button type="button" id="removeImage">
+
+                                    <i class="bi bi-x"></i>
+
+                                </button>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ================= BOUTON ================= -->
+
+                        <div class="submit-section">
+
+
+                            <button type="submit" class="submit-button">
+
+
+                                <i class="bi bi-send"></i>
+
+                                Envoyer le signalement
+
+
+                            </button>
+
+
+                            <p>
+
+                                <i class="bi bi-shield-lock"></i>
+
+                                Vos informations sont traitées de manière sécurisée.
+
+
+                            </p>
+
+
+                        </div>
+
+
+                    </form>
+
+
+                </div>
+
+
+
+                <!-- ================= SIDEBAR ================= -->
+
+                <div class="col-lg-4">
+
+
+                    <aside class="report-sidebar">
+
+
+                        <!-- CONSEIL -->
+
+                        <div class="sidebar-card info-card">
+
+
+                            <div class="sidebar-icon">
+
+                                <i class="bi bi-info-circle"></i>
+
+                            </div>
+
+
+                            <h5>
+
+                                Avant de signaler
+
+                            </h5>
+
+
+                            <ul>
+
+
+                                <li>
+
+                                    Vérifiez que la situation est réelle.
+
+                                </li>
+
+
+                                <li>
+
+                                    Ne vous mettez pas en danger.
+
+                                </li>
+
+
+                                <li>
+
+                                    Donnez des informations précises.
+
+                                </li>
+
+
+                                <li>
+
+                                    Ajoutez une photo si possible.
+
+                                </li>
+
+
+                            </ul>
+
+
+                        </div>
+
+
+
+                        <!-- URGENCE -->
+
+                        <div class="sidebar-card emergency-card">
+
+
+                            <div class="emergency-icon">
+
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+
+                            </div>
+
+
+                            <h5>
+
+                                Danger immédiat ?
+
+                            </h5>
+
+
+                            <p>
+
+                                Si votre sécurité ou celle d'une personne
+                                est immédiatement menacée, contactez
+                                directement les services d'urgence compétents.
+
+                            </p>
+
+
+                        </div>
+
+
+
+                        <!-- SECURITE -->
+
+                        <div class="sidebar-card privacy-card">
+
+
+                            <i class="bi bi-shield-check"></i>
+
+
+                            <div>
+
+
+                                <strong>
+
+                                    Signalement sécurisé
+
+                                </strong>
+
+
+                                <p>
+
+                                    Vos informations sont protégées.
+
+                                </p>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </aside>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="report-footer">
+
+
+        <div class="container">
+
+
+            <div class="d-flex flex-column flex-md-row
+                justify-content-between align-items-center gap-3">
+
+
+                <p>
+
+                    © 2026 Niger Alert. Tous droits réservés.
+
+                </p>
+
+
+                <a href="{{ url_for('index') }}">
+
+                    <i class="bi bi-house-door"></i>
+
+                    Retour à l'accueil
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    </footer>
+
+
+
+    <!-- Bootstrap -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- JavaScript -->
+
+    <script src="{{ url_for('static', filename='js/report.js') }}"></script>
+
+
+</body>
+
+</html>
