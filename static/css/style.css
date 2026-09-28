@@ -4,6 +4,11 @@
 ========================================================= */
 
 /* ================= VARIABLES ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 :root {
 
@@ -282,6 +287,11 @@ body {
             #ffffff,
             #f7f9fc
         );
+
+         background-image: url("/static/images/images (48).jpeg ");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 
 }
 

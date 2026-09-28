@@ -28,9 +28,54 @@ import uuid
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = "niger-alert-secret-key"
+# ------------------------------------------------------------
+# SECRET KEY
+# ------------------------------------------------------------
+# En local, une clé par défaut est utilisée.
+# Sur Render, crée une variable d'environnement SECRET_KEY.
+# ------------------------------------------------------------
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///niger_alert.db"
+app.config["SECRET_KEY"] = os.environ.get(
+    "SECRET_KEY",
+    "dev-secret-key-change-me"
+)
+
+
+# ============================================================
+# BASE DE DONNÉES
+# ============================================================
+
+# Render peut fournir DATABASE_URL.
+# Pour l'instant, si aucune DATABASE_URL n'est configurée,
+# l'application utilise SQLite.
+
+database_url = os.environ.get(
+    "DATABASE_URL"
+)
+
+if database_url:
+
+    # Certaines plateformes fournissent encore postgres://
+    # alors que SQLAlchemy attend postgresql://
+
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace(
+            "postgres://",
+            "postgresql://",
+            1
+        )
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+
+else:
+
+    # SQLite utilisée actuellement
+    # Le dossier instance sera créé automatiquement.
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = (
+        "sqlite:///niger_alert.db"
+    )
+
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -46,6 +91,7 @@ UPLOAD_FOLDER = os.path.join(
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+
 ALLOWED_EXTENSIONS = {
     "png",
     "jpg",
@@ -53,12 +99,16 @@ ALLOWED_EXTENSIONS = {
     "webp"
 }
 
+
+# Taille maximale : 5 Mo
+
 MAX_FILE_SIZE = 5 * 1024 * 1024
 
 app.config["MAX_CONTENT_LENGTH"] = MAX_FILE_SIZE
 
 
-# Créer automatiquement le dossier uploads
+# Création automatique du dossier uploads
+
 os.makedirs(
     app.config["UPLOAD_FOLDER"],
     exist_ok=True
@@ -130,8 +180,8 @@ class Admin(db.Model, UserMixin):
         nullable=False
     )
 
-
     def get_id(self):
+
         return f"admin:{self.id}"
 
 
@@ -141,25 +191,43 @@ class Admin(db.Model, UserMixin):
 
 class User(db.Model, UserMixin):
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
-    username = db.Column(db.String(100), unique=True, nullable=False)
+    username = db.Column(
+        db.String(100),
+        unique=True,
+        nullable=False
+    )
 
-    email = db.Column(db.String(150), unique=True, nullable=False)
+    email = db.Column(
+        db.String(150),
+        unique=True,
+        nullable=False
+    )
 
-    password = db.Column(db.String(255), nullable=False)
+    password = db.Column(
+        db.String(255),
+        nullable=False
+    )
 
-    is_active = db.Column(db.Boolean, default=True, nullable=False)
+    is_active = db.Column(
+        db.Boolean,
+        default=True,
+        nullable=False
+    )
 
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        nullable=False
+    )
 
     def get_id(self):
+
         return f"user:{self.id}"
-
-
-
-
-
 
 
 # ============================================================
@@ -173,9 +241,9 @@ class Report(db.Model):
         primary_key=True
     )
 
-    # ========================================================
+    # --------------------------------------------------------
     # UTILISATEUR AYANT ENVOYÉ LE SIGNALEMENT
-    # ========================================================
+    # --------------------------------------------------------
 
     user_id = db.Column(
         db.Integer,
@@ -191,9 +259,9 @@ class Report(db.Model):
         )
     )
 
-    # ========================================================
+    # --------------------------------------------------------
     # INFORMATIONS DU SIGNALEMENT
-    # ========================================================
+    # --------------------------------------------------------
 
     incident_type = db.Column(
         db.String(100),
@@ -253,6 +321,7 @@ class Report(db.Model):
         nullable=False
     )
 
+
 # ============================================================
 # CHARGEMENT DE L'UTILISATEUR
 # ============================================================
@@ -261,57 +330,87 @@ class Report(db.Model):
 def load_user(user_id):
 
     try:
-        user_type, numeric_id = user_id.split(":", 1)
+
+        user_type, numeric_id = user_id.split(
+            ":",
+            1
+        )
+
         numeric_id = int(numeric_id)
-    except (AttributeError, ValueError):
+
+    except (
+        AttributeError,
+        ValueError
+    ):
+
         return None
 
+
     if user_type == "admin":
-        return db.session.get(Admin, numeric_id)
+
+        return db.session.get(
+            Admin,
+            numeric_id
+        )
+
 
     if user_type == "user":
-        return db.session.get(User, numeric_id)
+
+        return db.session.get(
+            User,
+            numeric_id
+        )
+
 
     return None
 
 
-
-
-
 # ============================================================
-# DÉCONNEXION AUTOMATIQUE DU CITOYEN APRÈS UN SIGNALEMENT
+# DÉCONNEXION AUTOMATIQUE APRÈS UN SIGNALEMENT
 # ============================================================
 
 @app.before_request
 def check_report_logout():
 
+    logout_at = session.get(
+        "logout_at"
+    )
+
     # Aucun délai programmé
-    logout_at = session.get("logout_at")
 
     if not logout_at:
+
         return
 
-    # Vérifier uniquement les utilisateurs citoyens
+
+    # Vérifier uniquement les citoyens connectés
+
     if (
         current_user.is_authenticated
         and isinstance(current_user, User)
     ):
 
-        if datetime.utcnow().timestamp() >= logout_at:
+        if datetime.utcnow().timestamp() >= float(logout_at):
 
             logout_user()
 
-            session.pop("logout_at", None)
+            session.pop(
+                "logout_at",
+                None
+            )
 
             flash(
                 "Votre session a expiré 5 minutes après votre signalement.",
                 "info"
             )
 
-            return redirect(url_for("user_login"))
+            return redirect(
+                url_for("user_login")
+            )
+
 
 # ============================================================
-# PROTECTION ADMIN PRINCIPAL
+# PROTECTION ADMIN
 # ============================================================
 
 def admin_required(function):
@@ -320,19 +419,47 @@ def admin_required(function):
     @login_required
     def decorated_function(*args, **kwargs):
 
-        if not isinstance(current_user, Admin):
-            flash("Accès réservé aux administrateurs.", "danger")
-            return redirect(url_for("index"))
+        if not isinstance(
+            current_user,
+            Admin
+        ):
+
+            flash(
+                "Accès réservé aux administrateurs.",
+                "danger"
+            )
+
+            return redirect(
+                url_for("index")
+            )
+
 
         if not current_user.is_active:
-            logout_user()
-            flash("Votre compte administrateur est désactivé.", "danger")
-            return redirect(url_for("admin_login"))
 
-        return function(*args, **kwargs)
+            logout_user()
+
+            flash(
+                "Votre compte administrateur est désactivé.",
+                "danger"
+            )
+
+            return redirect(
+                url_for("admin_login")
+            )
+
+
+        return function(
+            *args,
+            **kwargs
+        )
+
 
     return decorated_function
 
+
+# ============================================================
+# PROTECTION ADMIN PRINCIPAL
+# ============================================================
 
 def principal_required(function):
 
@@ -341,10 +468,22 @@ def principal_required(function):
     def decorated_function(*args, **kwargs):
 
         if current_user.role != "principal":
-            flash("Accès réservé à l'administrateur principal.", "danger")
-            return redirect(url_for("admin_dashboard"))
 
-        return function(*args, **kwargs)
+            flash(
+                "Accès réservé à l'administrateur principal.",
+                "danger"
+            )
+
+            return redirect(
+                url_for("admin_dashboard")
+            )
+
+
+        return function(
+            *args,
+            **kwargs
+        )
+
 
     return decorated_function
 
@@ -356,20 +495,20 @@ def principal_required(function):
 @app.route("/")
 def index():
 
-    # Signalements en attente
     pending_reports = Report.query.filter_by(
         status="en attente"
     ).count()
 
-    # Signalements traités
+
     processed_reports = Report.query.filter_by(
         status="traite"
     ).count()
 
-    # Signalements en cours
+
     in_progress_reports = Report.query.filter_by(
         status="en cours"
     ).count()
+
 
     return render_template(
         "index.html",
@@ -378,11 +517,17 @@ def index():
         in_progress_reports=in_progress_reports
     )
 
-# aboot ------------------------------------------------
+
+# ============================================================
+# PAGE À PROPOS
+# ============================================================
 
 @app.route("/about")
 def about():
-    return render_template("about.html")
+
+    return render_template(
+        "about.html"
+    )
 
 
 # ============================================================
@@ -396,6 +541,7 @@ def map_page():
         Report.latitude.isnot(None),
         Report.longitude.isnot(None)
     ).all()
+
 
     return render_template(
         "map.html",
@@ -421,40 +567,48 @@ def report():
             ""
         ).strip()
 
+
         title = request.form.get(
             "title",
             ""
         ).strip()
+
 
         description = request.form.get(
             "description",
             ""
         ).strip()
 
+
         region = request.form.get(
             "region",
             ""
         ).strip()
+
 
         city = request.form.get(
             "city",
             ""
         ).strip()
 
+
         address = request.form.get(
             "address",
             ""
         ).strip()
+
 
         urgency = request.form.get(
             "urgency",
             ""
         ).strip()
 
+
         latitude = request.form.get(
             "latitude",
             ""
         ).strip()
+
 
         longitude = request.form.get(
             "longitude",
@@ -463,10 +617,11 @@ def report():
 
 
         # ====================================================
-        # VALIDATION DES CHAMPS
+        # VALIDATION
         # ====================================================
 
         if not incident_type:
+
             flash(
                 "Veuillez sélectionner le type d'incident.",
                 "danger"
@@ -478,6 +633,7 @@ def report():
 
 
         if not title:
+
             flash(
                 "Veuillez saisir un titre.",
                 "danger"
@@ -489,6 +645,7 @@ def report():
 
 
         if not description:
+
             flash(
                 "Veuillez décrire le problème.",
                 "danger"
@@ -500,6 +657,7 @@ def report():
 
 
         if not region:
+
             flash(
                 "Veuillez sélectionner une région.",
                 "danger"
@@ -511,6 +669,7 @@ def report():
 
 
         if not city:
+
             flash(
                 "Veuillez saisir une ville.",
                 "danger"
@@ -522,6 +681,7 @@ def report():
 
 
         if not urgency:
+
             flash(
                 "Veuillez sélectionner le niveau d'urgence.",
                 "danger"
@@ -536,7 +696,9 @@ def report():
         # UPLOAD IMAGE
         # ====================================================
 
-        image = request.files.get("image")
+        image = request.files.get(
+            "image"
+        )
 
         image_filename = None
 
@@ -590,45 +752,51 @@ def report():
         # ====================================================
         # CRÉATION DU SIGNALEMENT
         # ====================================================
+
         new_report = Report(
 
-    # Utilisateur connecté qui envoie le signalement
-    user_id=current_user.id,
+            user_id=current_user.id,
 
-    incident_type=incident_type,
+            incident_type=incident_type,
 
-    title=title,
+            title=title,
 
-    description=description,
+            description=description,
 
-    region=region,
+            region=region,
 
-    city=city,
+            city=city,
 
-    address=address,
+            address=address,
 
-    urgency=urgency,
+            urgency=urgency,
 
-    latitude=latitude,
+            latitude=latitude,
 
-    longitude=longitude,
+            longitude=longitude,
 
-    image=image_filename,
+            image=image_filename,
 
-    status="en attente"
+            status="en attente"
 
-)
+        )
+
 
         db.session.add(
             new_report
         )
 
         db.session.commit()
-        # ============================================================
-# DÉCONNEXION AUTOMATIQUE DU CITOYEN APRÈS UN SIGNALEMENT
-# ============================================================
 
-        session["logout_at"] = datetime.utcnow().timestamp() + 60
+
+        # ====================================================
+        # DÉCONNEXION AUTOMATIQUE APRÈS 5 MINUTES
+        # ====================================================
+
+        session["logout_at"] = (
+            datetime.utcnow().timestamp()
+            + 5 * 60
+        )
 
 
         flash(
@@ -658,6 +826,7 @@ def alerts():
         Report.created_at.desc()
     ).all()
 
+
     return render_template(
         "alerts.html",
         reports=reports
@@ -668,102 +837,308 @@ def alerts():
 # CONNEXION CITOYEN
 # ============================================================
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route(
+    "/login",
+    methods=["GET", "POST"]
+)
 def user_login():
 
     if current_user.is_authenticated:
-        if isinstance(current_user, Admin):
-            return redirect(url_for("admin_dashboard"))
-        return redirect(url_for("index"))
 
-    next_page = request.args.get("next") or request.form.get("next")
+        if isinstance(
+            current_user,
+            Admin
+        ):
+
+            return redirect(
+                url_for("admin_dashboard")
+            )
+
+
+        return redirect(
+            url_for("index")
+        )
+
+
+    next_page = (
+        request.args.get("next")
+        or request.form.get("next")
+    )
+
 
     if request.method == "POST":
-        username = request.form.get("username", "").strip()
-        password = request.form.get("password", "")
 
-        user = User.query.filter_by(username=username).first()
+        username = request.form.get(
+            "username",
+            ""
+        ).strip()
 
-        if user and check_password_hash(user.password, password):
+
+        password = request.form.get(
+            "password",
+            ""
+        )
+
+
+        user = User.query.filter_by(
+            username=username
+        ).first()
+
+
+        if (
+            user
+            and check_password_hash(
+                user.password,
+                password
+            )
+        ):
+
             if not user.is_active:
-                flash("Votre compte est désactivé. Contactez l'administrateur.", "danger")
-                return redirect(url_for("user_login"))
 
-            login_user(user)
-            flash(f"Bienvenue {user.username}.", "success")
+                flash(
+                    "Votre compte est désactivé. Contactez l'administrateur.",
+                    "danger"
+                )
 
-            if next_page and next_page.startswith("/") and not next_page.startswith("//"):
-                return redirect(next_page)
+                return redirect(
+                    url_for("user_login")
+                )
 
-            return redirect(url_for("report"))
 
-        flash("Nom d'utilisateur ou mot de passe incorrect.", "danger")
+            login_user(
+                user
+            )
 
-    return render_template("login.html", next_page=next_page)
+
+            flash(
+                f"Bienvenue {user.username}.",
+                "success"
+            )
+
+
+            if (
+                next_page
+                and next_page.startswith("/")
+                and not next_page.startswith("//")
+            ):
+
+                return redirect(
+                    next_page
+                )
+
+
+            return redirect(
+                url_for("report")
+            )
+
+
+        flash(
+            "Nom d'utilisateur ou mot de passe incorrect.",
+            "danger"
+        )
+
+
+    return render_template(
+        "login.html",
+        next_page=next_page
+    )
 
 
 # ============================================================
 # INSCRIPTION CITOYEN
 # ============================================================
 
-@app.route("/register", methods=["GET", "POST"])
+@app.route(
+    "/register",
+    methods=["GET", "POST"]
+)
 def user_register():
 
     if current_user.is_authenticated:
-        if isinstance(current_user, Admin):
-            return redirect(url_for("admin_dashboard"))
-        return redirect(url_for("index"))
 
-    next_page = request.args.get("next") or request.form.get("next")
+        if isinstance(
+            current_user,
+            Admin
+        ):
 
-    if request.method == "POST":
-        username = request.form.get("username", "").strip()
-        email = request.form.get("email", "").strip().lower()
-        password = request.form.get("password", "")
-        confirm_password = request.form.get("confirm_password", "")
+            return redirect(
+                url_for("admin_dashboard")
+            )
 
-        if len(username) < 3:
-            flash("Le nom d'utilisateur doit contenir au moins 3 caractères.", "danger")
-            return render_template("register.html", next_page=next_page)
 
-        if not email or "@" not in email:
-            flash("Veuillez saisir une adresse e-mail valide.", "danger")
-            return render_template("register.html", next_page=next_page)
-
-        if len(password) < 6:
-            flash("Le mot de passe doit contenir au moins 6 caractères.", "danger")
-            return render_template("register.html", next_page=next_page)
-
-        if password != confirm_password:
-            flash("Les mots de passe ne correspondent pas.", "danger")
-            return render_template("register.html", next_page=next_page)
-
-        if User.query.filter_by(username=username).first():
-            flash("Ce nom d'utilisateur existe déjà.", "warning")
-            return render_template("register.html", next_page=next_page)
-
-        if User.query.filter_by(email=email).first():
-            flash("Cette adresse e-mail est déjà utilisée.", "warning")
-            return render_template("register.html", next_page=next_page)
-
-        new_user = User(
-            username=username,
-            email=email,
-            password=generate_password_hash(password),
-            is_active=True
+        return redirect(
+            url_for("index")
         )
 
-        db.session.add(new_user)
+
+    next_page = (
+        request.args.get("next")
+        or request.form.get("next")
+    )
+
+
+    if request.method == "POST":
+
+        username = request.form.get(
+            "username",
+            ""
+        ).strip()
+
+
+        email = request.form.get(
+            "email",
+            ""
+        ).strip().lower()
+
+
+        password = request.form.get(
+            "password",
+            ""
+        )
+
+
+        confirm_password = request.form.get(
+            "confirm_password",
+            ""
+        )
+
+
+        if len(username) < 3:
+
+            flash(
+                "Le nom d'utilisateur doit contenir au moins 3 caractères.",
+                "danger"
+            )
+
+            return render_template(
+                "register.html",
+                next_page=next_page
+            )
+
+
+        if not email or "@" not in email:
+
+            flash(
+                "Veuillez saisir une adresse e-mail valide.",
+                "danger"
+            )
+
+            return render_template(
+                "register.html",
+                next_page=next_page
+            )
+
+
+        if len(password) < 6:
+
+            flash(
+                "Le mot de passe doit contenir au moins 6 caractères.",
+                "danger"
+            )
+
+            return render_template(
+                "register.html",
+                next_page=next_page
+            )
+
+
+        if password != confirm_password:
+
+            flash(
+                "Les mots de passe ne correspondent pas.",
+                "danger"
+            )
+
+            return render_template(
+                "register.html",
+                next_page=next_page
+            )
+
+
+        if User.query.filter_by(
+            username=username
+        ).first():
+
+            flash(
+                "Ce nom d'utilisateur existe déjà.",
+                "warning"
+            )
+
+            return render_template(
+                "register.html",
+                next_page=next_page
+            )
+
+
+        if User.query.filter_by(
+            email=email
+        ).first():
+
+            flash(
+                "Cette adresse e-mail est déjà utilisée.",
+                "warning"
+            )
+
+            return render_template(
+                "register.html",
+                next_page=next_page
+            )
+
+
+        new_user = User(
+
+            username=username,
+
+            email=email,
+
+            password=generate_password_hash(
+                password
+            ),
+
+            is_active=True
+
+        )
+
+
+        db.session.add(
+            new_user
+        )
+
         db.session.commit()
 
-        flash("Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.", "success")
 
-        login_url = url_for("user_login")
-        if next_page and next_page.startswith("/") and not next_page.startswith("//"):
-            login_url = url_for("user_login", next=next_page)
-        return redirect(login_url)
+        flash(
+            "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.",
+            "success"
+        )
 
-    return render_template("register.html", next_page=next_page)
+
+        login_url = url_for(
+            "user_login"
+        )
+
+
+        if (
+            next_page
+            and next_page.startswith("/")
+            and not next_page.startswith("//")
+        ):
+
+            login_url = url_for(
+                "user_login",
+                next=next_page
+            )
+
+
+        return redirect(
+            login_url
+        )
+
+
+    return render_template(
+        "register.html",
+        next_page=next_page
+    )
 
 
 # ============================================================
@@ -773,12 +1148,36 @@ def user_register():
 @app.route("/logout")
 def user_logout():
 
-    if current_user.is_authenticated and isinstance(current_user, Admin):
-        return redirect(url_for("admin_logout"))
+    if (
+        current_user.is_authenticated
+        and isinstance(
+            current_user,
+            Admin
+        )
+    ):
+
+        return redirect(
+            url_for("admin_logout")
+        )
+
 
     logout_user()
-    flash("Vous avez été déconnecté.", "success")
-    return redirect(url_for("index"))
+
+    session.pop(
+        "logout_at",
+        None
+    )
+
+
+    flash(
+        "Vous avez été déconnecté.",
+        "success"
+    )
+
+
+    return redirect(
+        url_for("index")
+    )
 
 
 # ============================================================
@@ -793,10 +1192,15 @@ def admin_login():
 
     if current_user.is_authenticated:
 
-        if isinstance(current_user, Admin):
+        if isinstance(
+            current_user,
+            Admin
+        ):
+
             return redirect(
                 url_for("admin_dashboard")
             )
+
 
         logout_user()
 
@@ -807,6 +1211,7 @@ def admin_login():
             "username",
             ""
         ).strip()
+
 
         password = request.form.get(
             "password",
@@ -819,9 +1224,12 @@ def admin_login():
         ).first()
 
 
-        if admin and check_password_hash(
-            admin.password,
-            password
+        if (
+            admin
+            and check_password_hash(
+                admin.password,
+                password
+            )
         ):
 
             if not admin.is_active:
@@ -866,13 +1274,6 @@ def admin_login():
 # ============================================================
 # INSCRIPTION ADMINISTRATEUR
 # ============================================================
-#
-# IMPORTANT :
-# Cette route permet uniquement de créer un compte admin.
-# Pour la sécurité, les autres administrateurs doivent être
-# créés depuis l'espace de l'administrateur principal.
-#
-# ============================================================
 
 @app.route(
     "/admin/register",
@@ -885,10 +1286,12 @@ def admin_register():
         ""
     ).strip()
 
+
     password = request.form.get(
         "password",
         ""
     )
+
 
     confirm_password = request.form.get(
         "confirm_password",
@@ -1075,10 +1478,12 @@ def add_admin():
         ""
     ).strip()
 
+
     password = request.form.get(
         "password",
         ""
     )
+
 
     confirm_password = request.form.get(
         "confirm_password",
@@ -1203,7 +1608,6 @@ def toggle_admin(admin_id):
 
     admin.is_active = not admin.is_active
 
-
     db.session.commit()
 
 
@@ -1281,9 +1685,6 @@ def delete_admin(admin_id):
 # ============================================================
 # DÉTAIL D'UN SIGNALEMENT
 # ============================================================
-
-
-
 
 @app.route(
     "/admin/report/<int:report_id>"
@@ -1378,6 +1779,7 @@ def delete_report(report_id):
 
 
     # Supprimer également l'image associée
+
     if report.image:
 
         image_path = os.path.join(
@@ -1386,7 +1788,9 @@ def delete_report(report_id):
         )
 
 
-        if os.path.exists(image_path):
+        if os.path.exists(
+            image_path
+        ):
 
             os.remove(
                 image_path
@@ -1410,6 +1814,7 @@ def delete_report(report_id):
         url_for("admin_dashboard")
     )
 
+
 # ============================================================
 # STATISTIQUES ADMIN
 # ============================================================
@@ -1418,16 +1823,16 @@ def delete_report(report_id):
 @admin_required
 def admin_statistics():
 
-    # ========================================================
-    # TOTAL DES SIGNALEMENTS
-    # ========================================================
+    # --------------------------------------------------------
+    # TOTAL
+    # --------------------------------------------------------
 
     total_reports = Report.query.count()
 
 
-    # ========================================================
-    # SIGNALEMENTS PAR STATUT
-    # ========================================================
+    # --------------------------------------------------------
+    # STATISTIQUES PAR STATUT
+    # --------------------------------------------------------
 
     pending_reports = Report.query.filter_by(
         status="en attente"
@@ -1444,23 +1849,26 @@ def admin_statistics():
     ).count()
 
 
-    # ========================================================
+    # --------------------------------------------------------
     # SIGNALEMENTS URGENTS
-    # ========================================================
+    # --------------------------------------------------------
 
     urgent_reports = Report.query.filter_by(
         urgency="elevee"
     ).count()
 
 
-    # ========================================================
+    # --------------------------------------------------------
     # TAUX DE TRAITEMENT
-    # ========================================================
+    # --------------------------------------------------------
 
     if total_reports > 0:
 
         treatment_rate = round(
-            (processed_reports / total_reports) * 100
+            (
+                processed_reports
+                / total_reports
+            ) * 100
         )
 
     else:
@@ -1468,9 +1876,9 @@ def admin_statistics():
         treatment_rate = 0
 
 
-    # ========================================================
-    # STATISTIQUES PAR TYPE D'INCIDENT
-    # ========================================================
+    # --------------------------------------------------------
+    # PAR TYPE D'INCIDENT
+    # --------------------------------------------------------
 
     incident_results = db.session.query(
         Report.incident_type,
@@ -1482,19 +1890,21 @@ def admin_statistics():
 
     incident_labels = [
         incident_type.capitalize()
-        for incident_type, count in incident_results
+        for incident_type, count
+        in incident_results
     ]
 
 
     incident_values = [
         count
-        for incident_type, count in incident_results
+        for incident_type, count
+        in incident_results
     ]
 
 
-    # ========================================================
-    # STATISTIQUES PAR STATUT
-    # ========================================================
+    # --------------------------------------------------------
+    # PAR STATUT
+    # --------------------------------------------------------
 
     status_results = db.session.query(
         Report.status,
@@ -1506,19 +1916,21 @@ def admin_statistics():
 
     status_labels = [
         status.capitalize()
-        for status, count in status_results
+        for status, count
+        in status_results
     ]
 
 
     status_values = [
         count
-        for status, count in status_results
+        for status, count
+        in status_results
     ]
 
 
-    # ========================================================
-    # STATISTIQUES PAR RÉGION
-    # ========================================================
+    # --------------------------------------------------------
+    # PAR RÉGION
+    # --------------------------------------------------------
 
     region_statistics = db.session.query(
         Report.region,
@@ -1529,10 +1941,6 @@ def admin_statistics():
         func.count(Report.id).desc()
     ).all()
 
-
-    # ========================================================
-    # AFFICHAGE DE LA PAGE
-    # ========================================================
 
     return render_template(
         "admin_statistics.html",
@@ -1560,6 +1968,7 @@ def admin_statistics():
         region_statistics=region_statistics
     )
 
+
 # ============================================================
 # DÉCONNEXION ADMIN
 # ============================================================
@@ -1582,16 +1991,31 @@ def admin_logout():
     )
 
 
-
-
 # ============================================================
 # CRÉATION DU PREMIER ADMINISTRATEUR
 # ============================================================
 
 def create_default_admin():
 
+    # --------------------------------------------------------
+    # Les valeurs peuvent être configurées depuis Render
+    # avec ADMIN_USERNAME et ADMIN_PASSWORD.
+    # --------------------------------------------------------
+
+    admin_username = os.environ.get(
+        "ADMIN_USERNAME",
+        "admin"
+    )
+
+
+    admin_password = os.environ.get(
+        "ADMIN_PASSWORD",
+        "admin123"
+    )
+
+
     admin = Admin.query.filter_by(
-        username="admin"
+        username=admin_username
     ).first()
 
 
@@ -1599,10 +2023,10 @@ def create_default_admin():
 
         default_admin = Admin(
 
-            username="admin",
+            username=admin_username,
 
             password=generate_password_hash(
-                "admin123"
+                admin_password
             ),
 
             role="principal",
@@ -1616,7 +2040,6 @@ def create_default_admin():
             default_admin
         )
 
-
         db.session.commit()
 
 
@@ -1625,15 +2048,15 @@ def create_default_admin():
         )
 
         print(
-            "Administrateur principal créé avec succès."
+            "Administrateur principal créé."
         )
 
         print(
-            "Nom d'utilisateur : admin"
+            f"Nom d'utilisateur : {admin_username}"
         )
 
         print(
-            "Mot de passe : admin123"
+            "Mot de passe : configuré depuis l'environnement."
         )
 
         print(
@@ -1647,9 +2070,8 @@ def create_default_admin():
 
     else:
 
-        # Si l'ancien compte admin existe déjà mais
-        # possède le mauvais rôle, on le transforme
-        # en administrateur principal.
+        # Si le compte existe déjà,
+        # on s'assure qu'il reste principal.
 
         if admin.role != "principal":
 
@@ -1658,10 +2080,6 @@ def create_default_admin():
             admin.is_active = True
 
             db.session.commit()
-
-            print(
-                "Le compte admin existant a été configuré comme principal."
-            )
 
 
 # ============================================================
@@ -1676,27 +2094,50 @@ def file_too_large(error):
         "danger"
     )
 
+
     return redirect(
         url_for("report")
     )
 
 
+# ============================================================
+# INITIALISATION DE LA BASE
+# ============================================================
 
+def initialize_database():
+
+    with app.app_context():
+
+        # Création des tables si elles n'existent pas
+
+        db.create_all()
+
+        # Création du premier administrateur
+
+        create_default_admin()
 
 
 # ============================================================
-# LANCEMENT DE L'APPLICATION
+# INITIALISATION AU DÉMARRAGE
+# ============================================================
+
+initialize_database()
+
+
+# ============================================================
+# LANCEMENT LOCAL
 # ============================================================
 
 if __name__ == "__main__":
 
-    with app.app_context():
-
-        # Création des tables
-        db.create_all()
-
-        # Création / configuration du premier admin
-        create_default_admin()
-
-app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(
+            os.environ.get(
+                "PORT",
+                5000
+            )
+        ),
+        debug=False
+    )
 

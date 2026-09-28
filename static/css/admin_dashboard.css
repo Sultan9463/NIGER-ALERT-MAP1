@@ -1,6 +1,11 @@
 /* =====================================================
    NIGER ALERT - ADMIN DASHBOARD
 ===================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 :root {
     --primary: #0b5ed7;
