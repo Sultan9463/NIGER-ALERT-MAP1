@@ -795,7 +795,7 @@ def report():
 
         session["logout_at"] = (
             datetime.utcnow().timestamp()
-            + 5 * 60
+            + 1 * 60
         )
 
 

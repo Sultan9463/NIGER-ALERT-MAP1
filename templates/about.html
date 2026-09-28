@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -16,8 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- CSS personnalisé -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -27,388 +25,118 @@
 <body>
 
 
-<!-- ================= NAVBAR ================= -->
+    <!-- ================= NAVBAR ================= -->
 
-<nav class="navbar navbar-expand-lg navbar-light custom-navbar sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar sticky-top">
 
-    <div class="container">
+        <div class="container">
 
-        <!-- LOGO -->
+            <!-- LOGO -->
 
-        <a class="navbar-brand d-flex align-items-center"
-           href="{{ url_for('index') }}">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
 
-            <div class="logo-icon">
-                <i class="bi bi-shield-check"></i>
-            </div>
+                <div class="logo-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
 
-            <div class="logo-text">
+                <div class="logo-text">
 
-                <span>NIGER</span>
+                    <span>NIGER</span>
 
-                <strong>ALERT</strong>
+                    <strong>ALERT</strong>
 
-            </div>
+                </div>
 
-        </a>
-
-
-        <!-- MENU MOBILE -->
-
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarMenu"
-                aria-controls="navbarMenu"
-                aria-expanded="false"
-                aria-label="Ouvrir le menu">
-
-            <span class="navbar-toggler-icon"></span>
-
-        </button>
+            </a>
 
 
-        <!-- MENU -->
+            <!-- MENU MOBILE -->
 
-        <div class="collapse navbar-collapse" id="navbarMenu">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+                aria-controls="navbarMenu" aria-expanded="false" aria-label="Ouvrir le menu">
 
-            <ul class="navbar-nav mx-auto align-items-lg-center">
+                <span class="navbar-toggler-icon"></span>
 
-                <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="{{ url_for('index') }}">
-
-                        <i class="bi bi-house-door"></i>
-
-                        Accueil
-
-                    </a>
-
-                </li>
+            </button>
 
 
-                <li class="nav-item">
+            <!-- MENU -->
 
-                   <a class="nav-link active"
-                       href="{{ url_for('about') }}">
+            <div class="collapse navbar-collapse" id="navbarMenu">
 
-                        <i class="bi bi-info-circle"></i>
+                <ul class="navbar-nav mx-auto align-items-lg-center">
 
-                        À propos
+                    <li class="nav-item">
 
-                    </a>
+                        <a class="nav-link" href="{{ url_for('index') }}">
 
-                </li>
+                            <i class="bi bi-house-door"></i>
 
+                            Accueil
 
-                <li class="nav-item">
+                        </a>
 
-                    <a class="nav-link"
-                       href="{{ url_for('alerts') }}">
-
-                        <i class="bi bi-bell"></i>
-
-                        Alertes
-
-                    </a>
-
-                </li>
+                    </li>
 
 
-                <li class="nav-item">
+                    <li class="nav-item">
 
-                    <a class="nav-link" href="#comment-ca-marche">
+                        <a class="nav-link active" href="{{ url_for('about') }}">
+
+                            <i class="bi bi-info-circle"></i>
+
+                            À propos
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="{{ url_for('alerts') }}">
+
+                            <i class="bi bi-bell"></i>
+
+                            Alertes
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="#comment-ca-marche">
 
                             Comment ça marche
 
                         </a>
 
 
-                </li>
+                    </li>
 
-            </ul>
+                </ul>
 
 
-            <!-- ACTION -->
+                <!-- ACTION -->
 
-            <div class="nav-actions d-flex align-items-center gap-2">
+                <div class="nav-actions d-flex align-items-center gap-2">
 
-                <a href="{{ url_for('report') }}"
-                   class="btn btn-report-nav">
+                    <a href="{{ url_for('report') }}" class="btn btn-report-nav">
 
-                    <i class="bi bi-plus-circle"></i>
-
-                    Signaler
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</nav>
-
-
-
-<!-- ================= HERO ABOUT ================= -->
-
-<section class="about-hero">
-
-    <div class="container">
-
-        <div class="row align-items-center g-5">
-
-            <!-- TEXTE -->
-
-            <div class="col-lg-7">
-
-                <div class="about-badge">
-
-                    <span>
-                        <i class="bi bi-shield-check"></i>
-                    </span>
-
-                    À PROPOS DE NIGER ALERT
-
-                </div>
-
-
-                <h1>
-
-                    Anticiper les risques.
-
-                    <span>Protéger les citoyens.</span>
-
-                </h1>
-
-
-                <p class="about-intro">
-
-                    Niger Alert est une plateforme numérique citoyenne
-                    conçue pour faciliter le signalement des incidents,
-                    améliorer la circulation de l'information et
-                    contribuer à la prévention des risques au Niger.
-
-                </p>
-
-
-                <div class="about-buttons">
-
-                    <a href="{{ url_for('report') }}"
-                       class="btn btn-primary-action">
-
-                        <i class="bi bi-exclamation-circle"></i>
-
-                        Signaler un incident
-
-                    </a>
-
-
-                    <a href="{{ url_for('map_page') }}"
-                       class="btn btn-secondary-action">
-
-                        <i class="bi bi-map"></i>
-
-                        Consulter la carte
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- VISUEL -->
-
-            <div class="col-lg-5">
-
-                <div class="about-visual-card">
-
-                    <div class="about-visual-icon">
-
-                        <i class="bi bi-shield-check"></i>
-
-                    </div>
-
-                    <h3>
-
-                        Niger Alert
-
-                    </h3>
-
-                    <p>
-
-                        Une plateforme au service de la
-                        prévention et de la sécurité citoyenne.
-
-                    </p>
-
-
-                    <div class="about-mini-stats">
-
-                        <div>
-
-                            <i class="bi bi-geo-alt"></i>
-
-                            <span>Localiser</span>
-
-                        </div>
-
-                        <div>
-
-                            <i class="bi bi-bell"></i>
-
-                            <span>Alerter</span>
-
-                        </div>
-
-                        <div>
-
-                            <i class="bi bi-shield-check"></i>
-
-                            <span>Protéger</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- ================= NOTRE MISSION ================= -->
-
-<section class="about-section">
-
-    <div class="container">
-
-        <div class="section-title text-center">
-
-            <span class="section-label">
-
-                <i class="bi bi-bullseye"></i>
-
-                NOTRE MISSION
-
-            </span>
-
-            <h2>
-
-                Une technologie au service des citoyens
-
-            </h2>
-
-            <p>
-
-                Niger Alert cherche à rapprocher les citoyens,
-                les informations de terrain et les acteurs
-                chargés de la prévention des risques.
-
-            </p>
-
-        </div>
-
-
-        <div class="row g-4">
-
-            <!-- CARD 1 -->
-
-            <div class="col-md-4">
-
-                <div class="about-feature-card">
-
-                    <div class="about-feature-icon">
-
-                        <i class="bi bi-megaphone"></i>
-
-                    </div>
-
-                    <h4>
+                        <i class="bi bi-plus-circle"></i>
 
                         Signaler
 
-                    </h4>
+                    </a>
 
-                    <p>
+                    <a href="{{ url_for('user_login') }}" class="btn btn-report-nav">
 
-                        Permettre aux citoyens de signaler
-                        rapidement les situations dangereuses
-                        qu'ils observent dans leur environnement.
+                        <i class="bi bi-person-fill"></i>
 
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- CARD 2 -->
-
-            <div class="col-md-4">
-
-                <div class="about-feature-card">
-
-                    <div class="about-feature-icon">
-
-                        <i class="bi bi-map"></i>
-
-                    </div>
-
-                    <h4>
-
-                        Visualiser
-
-                    </h4>
-
-                    <p>
-
-                        Présenter les incidents sur une carte
-                        afin de faciliter la compréhension
-                        de la situation sur le terrain.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- CARD 3 -->
-
-            <div class="col-md-4">
-
-                <div class="about-feature-card">
-
-                    <div class="about-feature-icon">
-
-                        <i class="bi bi-shield-check"></i>
-
-                    </div>
-
-                    <h4>
-
-                        Prévenir
-
-                    </h4>
-
-                    <p>
-
-                        Favoriser une meilleure sensibilisation
-                        et contribuer à une communauté plus
-                        informée et résiliente.
-
-                    </p>
+                        Connexion
+                    </a>
 
                 </div>
 
@@ -416,350 +144,200 @@
 
         </div>
 
-    </div>
-
-</section>
+    </nav>
 
 
-<!-- ================= VALEURS ================= -->
 
-<section class="about-values-section">
+    <!-- ================= HERO ABOUT ================= -->
 
-    <div class="container">
+    <section class="about-hero">
 
-        <div class="row align-items-center g-5">
+        <div class="container">
 
-            <div class="col-lg-6">
+            <div class="row align-items-center g-5">
+
+                <!-- TEXTE -->
+
+                <div class="col-lg-7">
+
+                    <div class="about-badge">
+
+                        <span>
+                            <i class="bi bi-shield-check"></i>
+                        </span>
+
+                        À PROPOS DE NIGER ALERT
+
+                    </div>
+
+
+                    <h1>
+
+                        Anticiper les risques.
+
+                        <span>Protéger les citoyens.</span>
+
+                    </h1>
+
+
+                    <p class="about-intro">
+
+                        Niger Alert est une plateforme numérique citoyenne
+                        conçue pour faciliter le signalement des incidents,
+                        améliorer la circulation de l'information et
+                        contribuer à la prévention des risques au Niger.
+
+                    </p>
+
+
+                    <div class="about-buttons">
+
+                        <a href="{{ url_for('report') }}" class="btn btn-primary-action">
+
+                            <i class="bi bi-exclamation-circle"></i>
+
+                            Signaler un incident
+
+                        </a>
+
+
+                        <a href="{{ url_for('map_page') }}" class="btn btn-secondary-action">
+
+                            <i class="bi bi-map"></i>
+
+                            Consulter la carte
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VISUEL -->
+
+                <div class="col-lg-5">
+
+                    <div class="about-visual-card">
+
+                        <div class="about-visual-icon">
+
+                            <i class="bi bi-shield-check"></i>
+
+                        </div>
+
+                        <h3>
+
+                            Niger Alert
+
+                        </h3>
+
+                        <p>
+
+                            Une plateforme au service de la
+                            prévention et de la sécurité citoyenne.
+
+                        </p>
+
+
+                        <div class="about-mini-stats">
+
+                            <div>
+
+                                <i class="bi bi-geo-alt"></i>
+
+                                <span>Localiser</span>
+
+                            </div>
+
+                            <div>
+
+                                <i class="bi bi-bell"></i>
+
+                                <span>Alerter</span>
+
+                            </div>
+
+                            <div>
+
+                                <i class="bi bi-shield-check"></i>
+
+                                <span>Protéger</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= NOTRE MISSION ================= -->
+
+    <section class="about-section">
+
+        <div class="container">
+
+            <div class="section-title text-center">
 
                 <span class="section-label">
 
-                    <i class="bi bi-stars"></i>
+                    <i class="bi bi-bullseye"></i>
 
-                    NOS VALEURS
+                    NOTRE MISSION
 
                 </span>
 
                 <h2>
 
-                    Une plateforme pensée pour l'intérêt collectif
+                    Une technologie au service des citoyens
 
                 </h2>
 
-                <p class="about-values-text">
+                <p>
 
-                    Niger Alert repose sur des principes simples :
-                    faciliter l'accès à l'information, encourager
-                    la participation citoyenne et utiliser les
-                    outils numériques pour contribuer à la prévention.
+                    Niger Alert cherche à rapprocher les citoyens,
+                    les informations de terrain et les acteurs
+                    chargés de la prévention des risques.
 
                 </p>
 
             </div>
 
 
-            <div class="col-lg-6">
+            <div class="row g-4">
 
-                <div class="value-list">
+                <!-- CARD 1 -->
 
-                    <div class="value-item">
+                <div class="col-md-4">
 
-                        <div class="value-icon">
+                    <div class="about-feature-card">
 
-                            <i class="bi bi-lightning-charge"></i>
+                        <div class="about-feature-icon">
 
-                        </div>
-
-                        <div>
-
-                            <h5>
-
-                                Rapidité
-
-                            </h5>
-
-                            <p>
-
-                                Faciliter la transmission des
-                                informations importantes.
-
-                            </p>
+                            <i class="bi bi-megaphone"></i>
 
                         </div>
-
-                    </div>
-
-
-                    <div class="value-item">
-
-                        <div class="value-icon">
-
-                            <i class="bi bi-people"></i>
-
-                        </div>
-
-                        <div>
-
-                            <h5>
-
-                                Participation citoyenne
-
-                            </h5>
-
-                            <p>
-
-                                Donner aux citoyens un moyen
-                                simple de contribuer.
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="value-item">
-
-                        <div class="value-icon">
-
-                            <i class="bi bi-bar-chart"></i>
-
-                        </div>
-
-                        <div>
-
-                            <h5>
-
-                                Information
-
-                            </h5>
-
-                            <p>
-
-                                Présenter les informations de
-                                manière claire et accessible.
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="value-item">
-
-                        <div class="value-icon">
-
-                            <i class="bi bi-shield-check"></i>
-
-                        </div>
-
-                        <div>
-
-                            <h5>
-
-                                Prévention
-
-                            </h5>
-
-                            <p>
-
-                                Contribuer à une meilleure
-                                anticipation des risques.
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-    <!-- ================= COMMENT ÇA MARCHE ================= -->
-
-<section class="about-process-section"  id="comment-ca-marche">
-
-    <div class="container">
-
-        <div class="section-title text-center">
-
-            <span class="section-label">
-
-                <i class="bi bi-diagram-3"></i>
-
-                COMMENT ÇA FONCTIONNE ?
-
-            </span>
-
-            <h2>
-
-                De l'observation à l'information
-
-            </h2>
-
-            <p>
-
-                Le principe de Niger Alert repose sur un processus
-                simple permettant de transmettre une information
-                concernant un incident.
-
-            </p>
-
-        </div>
-
-
-        <div class="row g-4">
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="about-step-card">
-
-                    <span>01</span>
-
-                    <i class="bi bi-eye"></i>
-
-                    <h4>
-
-                        Observer
-
-                    </h4>
-
-                    <p>
-
-                        Un citoyen constate une situation
-                        inhabituelle ou dangereuse.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="about-step-card">
-
-                    <span>02</span>
-
-                    <i class="bi bi-pencil-square"></i>
-
-                    <h4>
-
-                        Signaler
-
-                    </h4>
-
-                    <p>
-
-                        Il transmet les informations
-                        disponibles concernant l'incident.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="about-step-card">
-
-                    <span>03</span>
-
-                    <i class="bi bi-geo-alt"></i>
-
-                    <h4>
-
-                        Localiser
-
-                    </h4>
-
-                    <p>
-
-                        La zone concernée peut être
-                        identifiée afin de faciliter le suivi.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6 col-lg-3">
-
-                <div class="about-step-card">
-
-                    <span>04</span>
-
-                    <i class="bi bi-broadcast"></i>
-
-                    <h4>
-
-                        Informer
-
-                    </h4>
-
-                    <p>
-
-                        Les informations peuvent être
-                        consultées et suivies sur la plateforme.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer class="footer">
-
-    <div class="container">
-
-        <div class="row g-4">
-
-            <!-- LOGO -->
-
-            <div class="col-lg-5">
-
-                <div class="footer-brand">
-
-                    <div class="footer-logo-icon">
-
-                        <i class="bi bi-shield-check"></i>
-
-                    </div>
-
-                    <div>
 
                         <h4>
 
-                            NIGER ALERT
+                            Signaler
 
                         </h4>
 
                         <p>
 
-                            Anticiper. Alerter. Protéger.
+                            Permettre aux citoyens de signaler
+                            rapidement les situations dangereuses
+                            qu'ils observent dans leur environnement.
 
                         </p>
 
@@ -768,131 +346,545 @@
                 </div>
 
 
-                <p class="footer-description">
+                <!-- CARD 2 -->
 
-                    Une plateforme numérique dédiée au signalement
-                    et à la prévention des risques.
+                <div class="col-md-4">
+
+                    <div class="about-feature-card">
+
+                        <div class="about-feature-icon">
+
+                            <i class="bi bi-map"></i>
+
+                        </div>
+
+                        <h4>
+
+                            Visualiser
+
+                        </h4>
+
+                        <p>
+
+                            Présenter les incidents sur une carte
+                            afin de faciliter la compréhension
+                            de la situation sur le terrain.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CARD 3 -->
+
+                <div class="col-md-4">
+
+                    <div class="about-feature-card">
+
+                        <div class="about-feature-icon">
+
+                            <i class="bi bi-shield-check"></i>
+
+                        </div>
+
+                        <h4>
+
+                            Prévenir
+
+                        </h4>
+
+                        <p>
+
+                            Favoriser une meilleure sensibilisation
+                            et contribuer à une communauté plus
+                            informée et résiliente.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= VALEURS ================= -->
+
+    <section class="about-values-section">
+
+        <div class="container">
+
+            <div class="row align-items-center g-5">
+
+                <div class="col-lg-6">
+
+                    <span class="section-label">
+
+                        <i class="bi bi-stars"></i>
+
+                        NOS VALEURS
+
+                    </span>
+
+                    <h2>
+
+                        Une plateforme pensée pour l'intérêt collectif
+
+                    </h2>
+
+                    <p class="about-values-text">
+
+                        Niger Alert repose sur des principes simples :
+                        faciliter l'accès à l'information, encourager
+                        la participation citoyenne et utiliser les
+                        outils numériques pour contribuer à la prévention.
+
+                    </p>
+
+                </div>
+
+
+                <div class="col-lg-6">
+
+                    <div class="value-list">
+
+                        <div class="value-item">
+
+                            <div class="value-icon">
+
+                                <i class="bi bi-lightning-charge"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5>
+
+                                    Rapidité
+
+                                </h5>
+
+                                <p>
+
+                                    Faciliter la transmission des
+                                    informations importantes.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="value-item">
+
+                            <div class="value-icon">
+
+                                <i class="bi bi-people"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5>
+
+                                    Participation citoyenne
+
+                                </h5>
+
+                                <p>
+
+                                    Donner aux citoyens un moyen
+                                    simple de contribuer.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="value-item">
+
+                            <div class="value-icon">
+
+                                <i class="bi bi-bar-chart"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5>
+
+                                    Information
+
+                                </h5>
+
+                                <p>
+
+                                    Présenter les informations de
+                                    manière claire et accessible.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="value-item">
+
+                            <div class="value-icon">
+
+                                <i class="bi bi-shield-check"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5>
+
+                                    Prévention
+
+                                </h5>
+
+                                <p>
+
+                                    Contribuer à une meilleure
+                                    anticipation des risques.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= COMMENT ÇA MARCHE ================= -->
+
+    <section class="about-process-section" id="comment-ca-marche">
+
+        <div class="container">
+
+            <div class="section-title text-center">
+
+                <span class="section-label">
+
+                    <i class="bi bi-diagram-3"></i>
+
+                    COMMENT ÇA FONCTIONNE ?
+
+                </span>
+
+                <h2>
+
+                    De l'observation à l'information
+
+                </h2>
+
+                <p>
+
+                    Le principe de Niger Alert repose sur un processus
+                    simple permettant de transmettre une information
+                    concernant un incident.
 
                 </p>
 
             </div>
 
 
-            <!-- NAVIGATION -->
+            <div class="row g-4">
 
-            <div class="col-6 col-lg-3">
+                <div class="col-md-6 col-lg-3">
 
-                <h6>
+                    <div class="about-step-card">
 
-                    Navigation
+                        <span>01</span>
 
-                </h6>
+                        <i class="bi bi-eye"></i>
 
-                <ul class="footer-links">
+                        <h4>
 
-                    <li>
+                            Observer
 
-                        <a href="{{ url_for('index') }}">
+                        </h4>
 
-                            Accueil
+                        <p>
 
-                        </a>
+                            Un citoyen constate une situation
+                            inhabituelle ou dangereuse.
 
-                    </li>
+                        </p>
 
-                    <li>
+                    </div>
 
-                        <a href="{{ url_for('map_page') }}">
+                </div>
 
-                            Carte
 
-                        </a>
+                <div class="col-md-6 col-lg-3">
 
-                    </li>
+                    <div class="about-step-card">
 
-                    <li>
+                        <span>02</span>
 
-                        <a href="{{ url_for('alerts') }}">
+                        <i class="bi bi-pencil-square"></i>
 
-                            Alertes
+                        <h4>
 
-                        </a>
+                            Signaler
 
-                    </li>
+                        </h4>
 
-                    <li>
+                        <p>
 
-                        <a href="{{ url_for('about') }}">
+                            Il transmet les informations
+                            disponibles concernant l'incident.
 
-                            À propos
+                        </p>
 
-                        </a>
+                    </div>
 
-                    </li>
+                </div>
 
-                </ul>
+
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="about-step-card">
+
+                        <span>03</span>
+
+                        <i class="bi bi-geo-alt"></i>
+
+                        <h4>
+
+                            Localiser
+
+                        </h4>
+
+                        <p>
+
+                            La zone concernée peut être
+                            identifiée afin de faciliter le suivi.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="about-step-card">
+
+                        <span>04</span>
+
+                        <i class="bi bi-broadcast"></i>
+
+                        <h4>
+
+                            Informer
+
+                        </h4>
+
+                        <p>
+
+                            Les informations peuvent être
+                            consultées et suivies sur la plateforme.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="row g-4">
+
+                <!-- LOGO -->
+
+                <div class="col-lg-5">
+
+                    <div class="footer-brand">
+
+                        <div class="footer-logo-icon">
+
+                            <i class="bi bi-shield-check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h4>
+
+                                NIGER ALERT
+
+                            </h4>
+
+                            <p>
+
+                                Anticiper. Alerter. Protéger.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="footer-description">
+
+                        Une plateforme numérique dédiée au signalement
+                        et à la prévention des risques.
+
+                    </p>
+
+                </div>
+
+
+                <!-- NAVIGATION -->
+
+                <div class="col-6 col-lg-3">
+
+                    <h6>
+
+                        Navigation
+
+                    </h6>
+
+                    <ul class="footer-links">
+
+                        <li>
+
+                            <a href="{{ url_for('index') }}">
+
+                                Accueil
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ url_for('map_page') }}">
+
+                                Carte
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ url_for('alerts') }}">
+
+                                Alertes
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ url_for('about') }}">
+
+                                À propos
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <!-- PLATEFORME -->
+
+                <div class="col-6 col-lg-4">
+
+                    <h6>
+
+                        Plateforme citoyenne
+
+                    </h6>
+
+                    <p class="footer-text">
+
+                        Ensemble pour une communauté plus informée
+                        et plus résiliente.
+
+                    </p>
+
+                </div>
 
             </div>
 
 
-            <!-- PLATEFORME -->
+            <!-- COPYRIGHT -->
 
-            <div class="col-6 col-lg-4">
+            <div class="footer-bottom">
 
-                <h6>
+                <p>
 
-                    Plateforme citoyenne
-
-                </h6>
-
-                <p class="footer-text">
-
-                    Ensemble pour une communauté plus informée
-                    et plus résiliente.
+                    © 2026 Niger Alert. Tous droits réservés.
 
                 </p>
 
+                <span>
+
+                    <i class="bi bi-shield-check"></i>
+
+                    Plateforme de prévention
+
+                </span>
+
             </div>
 
         </div>
 
-
-        <!-- COPYRIGHT -->
-
-        <div class="footer-bottom">
-
-            <p>
-
-                © 2026 Niger Alert. Tous droits réservés.
-
-            </p>
-
-            <span>
-
-                <i class="bi bi-shield-check"></i>
-
-                Plateforme de prévention
-
-            </span>
-
-        </div>
-
-    </div>
-
-</footer>
+    </footer>
 
 
 
-<!-- Bootstrap JS -->
+    <!-- Bootstrap JS -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- JavaScript Flask -->
+    <!-- JavaScript Flask -->
 
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 
 </body>
 
 </html>
-

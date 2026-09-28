@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -6,34 +5,29 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Signalements | Niger Alert</title>
 
 
     <!-- Bootstrap -->
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
     <!-- Bootstrap Icons -->
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 
     <!-- CSS principal -->
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 
     <!-- CSS spécifique -->
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/alerts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alerts.css') }}">
 
 </head>
 
@@ -50,8 +44,7 @@
 
             <!-- LOGO -->
 
-            <a class="navbar-brand d-flex align-items-center"
-               href="{{ url_for('index') }}">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
 
 
                 <div class="logo-icon">
@@ -77,8 +70,7 @@
             <div class="d-flex align-items-center gap-3">
 
 
-                <a href="{{ url_for('index') }}"
-                   class="nav-link-custom">
+                <a href="{{ url_for('index') }}" class="nav-link-custom">
 
                     <i class="bi bi-house-door"></i>
 
@@ -87,13 +79,18 @@
                 </a>
 
 
-                <a href="{{ url_for('report') }}"
-                   class="new-report-button">
+                <a href="{{ url_for('report') }}" class="new-report-button">
 
                     <i class="bi bi-plus-circle"></i>
 
                     Nouveau signalement
 
+                </a>
+                <a href="{{ url_for('user_login') }}" class="btn btn-report-nav">
+
+                    <i class="bi bi-person-fill"></i>
+
+                    Connexion
                 </a>
 
 
@@ -191,195 +188,194 @@
             {% if reports %}
 
 
-                <div class="row g-4">
+            <div class="row g-4">
 
 
-                    {% for report in reports %}
+                {% for report in reports %}
 
 
-                        <div class="col-lg-6">
+                <div class="col-lg-6">
 
 
-                            <article class="alert-card">
+                    <article class="alert-card">
 
 
-                                <!-- CARD HEADER -->
+                        <!-- CARD HEADER -->
 
-                                <div class="alert-card-header">
+                        <div class="alert-card-header">
 
 
-                                    <div class="incident-badge
+                            <div class="incident-badge
                                         incident-{{ report.incident_type }}">
 
 
-                                        {% if report.incident_type == "inondation" %}
+                                {% if report.incident_type == "inondation" %}
 
-                                            <i class="bi bi-water"></i>
+                                <i class="bi bi-water"></i>
 
-                                        {% elif report.incident_type == "route" %}
+                                {% elif report.incident_type == "route" %}
 
-                                            <i class="bi bi-cone-striped"></i>
+                                <i class="bi bi-cone-striped"></i>
 
-                                        {% elif report.incident_type == "incendie" %}
+                                {% elif report.incident_type == "incendie" %}
 
-                                            <i class="bi bi-fire"></i>
+                                <i class="bi bi-fire"></i>
 
-                                        {% else %}
+                                {% else %}
 
-                                            <i class="bi bi-exclamation-circle"></i>
+                                <i class="bi bi-exclamation-circle"></i>
 
-                                        {% endif %}
-
-
-                                        {{ report.incident_type|capitalize }}
-
-                                    </div>
+                                {% endif %}
 
 
+                                {{ report.incident_type|capitalize }}
 
-                                    <span class="status-badge
+                            </div>
+
+
+
+                            <span class="status-badge
                                         status-{{ report.status|replace(' ', '-') }}">
 
-                                        {{ report.status|capitalize }}
+                                {{ report.status|capitalize }}
 
-                                    </span>
-
-
-                                </div>
-
-
-
-                                <!-- TITLE -->
-
-                                <h3>
-
-                                    {{ report.title }}
-
-                                </h3>
-
-
-
-                                <!-- DESCRIPTION -->
-
-                                <p class="alert-description">
-
-                                    {{ report.description }}
-
-                                </p>
-
-
-
-                                <!-- LOCATION -->
-
-                                <div class="alert-location">
-
-
-                                    <i class="bi bi-geo-alt"></i>
-
-
-                                    <span>
-
-                                        {{ report.city }}
-
-                                        {% if report.address %}
-
-                                            — {{ report.address }}
-
-                                        {% endif %}
-
-                                    </span>
-
-
-                                </div>
-
-
-
-                                <!-- FOOTER -->
-
-                                <div class="alert-card-footer">
-
-
-                                    <!-- URGENCY -->
-
-                                    <span class="urgency-badge
-                                        urgency-{{ report.urgency }}">
-
-                                        <i class="bi bi-lightning-charge"></i>
-
-                                        Urgence :
-                                        {{ report.urgency|capitalize }}
-
-                                    </span>
-
-
-
-                                    <!-- DATE -->
-
-                                    <span class="alert-date">
-
-                                        <i class="bi bi-clock"></i>
-
-                                        {{ report.created_at.strftime('%d/%m/%Y à %H:%M') }}
-
-                                    </span>
-
-
-                                </div>
-
-
-                            </article>
+                            </span>
 
 
                         </div>
 
 
-                    {% endfor %}
+
+                        <!-- TITLE -->
+
+                        <h3>
+
+                            {{ report.title }}
+
+                        </h3>
+
+
+
+                        <!-- DESCRIPTION -->
+
+                        <p class="alert-description">
+
+                            {{ report.description }}
+
+                        </p>
+
+
+
+                        <!-- LOCATION -->
+
+                        <div class="alert-location">
+
+
+                            <i class="bi bi-geo-alt"></i>
+
+
+                            <span>
+
+                                {{ report.city }}
+
+                                {% if report.address %}
+
+                                — {{ report.address }}
+
+                                {% endif %}
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- FOOTER -->
+
+                        <div class="alert-card-footer">
+
+
+                            <!-- URGENCY -->
+
+                            <span class="urgency-badge
+                                        urgency-{{ report.urgency }}">
+
+                                <i class="bi bi-lightning-charge"></i>
+
+                                Urgence :
+                                {{ report.urgency|capitalize }}
+
+                            </span>
+
+
+
+                            <!-- DATE -->
+
+                            <span class="alert-date">
+
+                                <i class="bi bi-clock"></i>
+
+                                {{ report.created_at.strftime('%d/%m/%Y à %H:%M') }}
+
+                            </span>
+
+
+                        </div>
+
+
+                    </article>
 
 
                 </div>
+
+
+                {% endfor %}
+
+
+            </div>
 
 
             {% else %}
 
 
-                <!-- EMPTY STATE -->
+            <!-- EMPTY STATE -->
 
-                <div class="empty-alerts">
-
-
-                    <div class="empty-icon">
-
-                        <i class="bi bi-inbox"></i>
-
-                    </div>
+            <div class="empty-alerts">
 
 
-                    <h3>
+                <div class="empty-icon">
 
-                        Aucun signalement pour le moment
-
-                    </h3>
-
-
-                    <p>
-
-                        Aucun incident n'a encore été signalé
-                        sur la plateforme.
-
-                    </p>
-
-
-                    <a href="{{ url_for('report') }}"
-                       class="new-report-button">
-
-                        <i class="bi bi-plus-circle"></i>
-
-                        Faire un signalement
-
-                    </a>
-
+                    <i class="bi bi-inbox"></i>
 
                 </div>
+
+
+                <h3>
+
+                    Aucun signalement pour le moment
+
+                </h3>
+
+
+                <p>
+
+                    Aucun incident n'a encore été signalé
+                    sur la plateforme.
+
+                </p>
+
+
+                <a href="{{ url_for('report') }}" class="new-report-button">
+
+                    <i class="bi bi-plus-circle"></i>
+
+                    Faire un signalement
+
+                </a>
+
+
+            </div>
 
 
             {% endif %}
@@ -440,4 +436,3 @@
 </body>
 
 </html>
-
