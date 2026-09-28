@@ -556,30 +556,182 @@
 
                             </div>
 
-                            <!-- GEOLOCALISATION -->
-
-                            <input type="hidden" name="latitude" id="latitude">
-
-                            <input type="hidden" name="longitude" id="longitude">
+                    
 
 
-                            <button type="button" class="location-button" id="locationButton">
 
-                                <i class="bi bi-crosshair"></i>
+                            <!-- GEOLOCALISATION OBLIGATOIRE -->
 
-                                Utiliser ma position actuelle
+<input type="hidden" name="latitude" id="latitude">
+<input type="hidden" name="longitude" id="longitude">
 
-                            </button>
+<button
+ type="button"
+ class="location-button"
+ id="locationButton">
 
-                            <p class="location-info" id="locationStatus">
+<i class="bi bi-crosshair"></i>
+
+Utiliser ma position actuelle
 
 
-                                Votre position sera utilisée uniquement
-                                pour localiser précisément le signalement.
+</button>
+
+<p class="location-info" id="locationStatus">
+    <i class="bi bi-exclamation-circle text-warning"></i>
+    La géolocalisation est obligatoire pour envoyer un signalement.
+</p>
+
+<div id="locationError"
+     class="alert alert-danger mt-2 d-none">
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.querySelector("form");
+
+    const locationButton = document.getElementById("locationButton");
+
+    const latitude = document.getElementById("latitude");
+
+    const longitude = document.getElementById("longitude");
+
+    const locationStatus = document.getElementById("locationStatus");
+
+    const locationError = document.getElementById("locationError");
 
 
-                            </p>
+    // Bouton "Utiliser ma position actuelle"
+    locationButton.addEventListener("click", function () {
 
+        locationError.classList.add("d-none");
+        locationError.textContent = "";
+
+        locationStatus.innerHTML =
+            '<i class="bi bi-hourglass-split"></i> ' +
+            'Localisation en cours...';
+
+        locationButton.disabled = true;
+
+
+        if (!navigator.geolocation) {
+
+            locationError.textContent =
+                "La géolocalisation n'est pas prise en charge par votre navigateur.";
+
+            locationError.classList.remove("d-none");
+
+            locationStatus.innerHTML =
+                '<i class="bi bi-exclamation-circle text-danger"></i> ' +
+                'Géolocalisation impossible.';
+
+            locationButton.disabled = false;
+
+            return;
+        }
+
+
+        navigator.geolocation.getCurrentPosition(
+
+            function (position) {
+
+                latitude.value = position.coords.latitude;
+
+                longitude.value = position.coords.longitude;
+
+
+                locationStatus.innerHTML =
+                    '<i class="bi bi-check-circle-fill text-success"></i> ' +
+                    'Position récupérée avec succès.';
+
+                locationButton.innerHTML =
+                    '<i class="bi bi-check-circle"></i> Position récupérée';
+
+                locationButton.classList.add("location-success");
+
+                locationButton.disabled = false;
+
+            },
+
+            function (error) {
+
+                latitude.value = "";
+                longitude.value = "";
+
+                locationButton.disabled = false;
+
+                locationStatus.innerHTML =
+                    '<i class="bi bi-exclamation-circle text-danger"></i> ' +
+                    'La géolocalisation est obligatoire.';
+
+                if (error.code === 1) {
+
+                    locationError.textContent =
+                        "Vous devez autoriser l'accès à votre position pour pouvoir envoyer le signalement.";
+
+                } else if (error.code === 2) {
+
+                    locationError.textContent =
+                        "Votre position n'a pas pu être déterminée. Vérifiez votre connexion ou réessayez.";
+
+                } else if (error.code === 3) {
+
+                    locationError.textContent =
+                        "La localisation a pris trop de temps. Veuillez réessayer.";
+
+                } else {
+
+                    locationError.textContent =
+                        "Impossible de récupérer votre position. Veuillez réessayer.";
+
+                }
+
+                locationError.classList.remove("d-none");
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+
+        );
+
+    });
+
+
+    // BLOQUER L'ENVOI SI LA GEOLOCALISATION N'EST PAS FAITE
+    form.addEventListener("submit", function (event) {
+
+        if (
+            latitude.value.trim() === "" ||
+            longitude.value.trim() === ""
+        ) {
+
+            event.preventDefault();
+
+            locationError.textContent =
+                "La géolocalisation est obligatoire. Cliquez sur « Utiliser ma position actuelle » avant d'envoyer votre signalement.";
+
+            locationError.classList.remove("d-none");
+
+            locationStatus.innerHTML =
+                '<i class="bi bi-exclamation-circle text-danger"></i> ' +
+                'Veuillez activer votre position avant de continuer.';
+
+            locationButton.focus();
+
+            return false;
+        }
+
+    });
+
+});
+
+</script>
 
                         </div>
 

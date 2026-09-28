@@ -616,6 +616,9 @@ def report():
         ).strip()
 
 
+        
+
+
         # ====================================================
         # VALIDATION
         # ====================================================
@@ -630,6 +633,8 @@ def report():
             return redirect(
                 url_for("report")
             )
+
+        
 
 
         if not title:
@@ -679,6 +684,9 @@ def report():
                 url_for("report")
             )
 
+        
+        
+
 
         if not urgency:
 
@@ -690,6 +698,7 @@ def report():
             return redirect(
                 url_for("report")
             )
+        
 
 
         # ====================================================
